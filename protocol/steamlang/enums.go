@@ -3624,6 +3624,10 @@ const (
 	EResult_AccountHasBeenDeleted                    EResult = 114
 	EResult_AccountHasAnExistingUserCancelledLicense EResult = 115
 	EResult_DeniedDueToCommunityCooldown             EResult = 116
+	EResult_NoLauncherSpecified                      EResult = 117
+	EResult_MustAgreeToSSA                           EResult = 118
+	EResult_LauncherMigrated                         EResult = 119
+	EResult_CurrentSteamRealmDoesNotMatch            EResult = 120
 )
 
 var EResult_name = map[EResult]string{
@@ -3743,6 +3747,10 @@ var EResult_name = map[EResult]string{
 	114: "EResult_AccountHasBeenDeleted",
 	115: "EResult_AccountHasAnExistingUserCancelledLicense",
 	116: "EResult_DeniedDueToCommunityCooldown",
+	117: "EResult_NoLauncherSpecified",
+	118: "EResult_MustAgreeToSSA",
+	119: "EResult_LauncherMigrated",
+	120: "EResult_CurrentSteamRealmDoesNotMatch",
 }
 
 func (e EResult) String() string {
@@ -4546,6 +4554,8 @@ const (
 	EPaymentMethod_MasterComp             EPaymentMethod = 130
 	EPaymentMethod_Promotional            EPaymentMethod = 131
 	EPaymentMethod_MasterSubscription     EPaymentMethod = 134
+	EPaymentMethod_Payco                  EPaymentMethod = 135
+	EPaymentMethod_MobileWalletJapan      EPaymentMethod = 136
 	EPaymentMethod_OEMTicket              EPaymentMethod = 256
 	EPaymentMethod_Split                  EPaymentMethod = 512
 	EPaymentMethod_Complimentary          EPaymentMethod = 1024
@@ -4636,6 +4646,8 @@ var EPaymentMethod_name = map[EPaymentMethod]string{
 	130:  "EPaymentMethod_SteamPressMaster",
 	131:  "EPaymentMethod_StorePromotion",
 	134:  "EPaymentMethod_MasterSubscription",
+	135:  "EPaymentMethod_Payco",
+	136:  "EPaymentMethod_MobileWalletJapan",
 	256:  "EPaymentMethod_OEMTicket",
 	512:  "EPaymentMethod_Split",
 	1024: "EPaymentMethod_Complimentary",
@@ -5518,6 +5530,9 @@ const (
 	EOSType_Macos1013      EOSType = -84
 	EOSType_Macos1014      EOSType = -83
 	EOSType_Macos1015      EOSType = -82
+	EOSType_MacOS1016      EOSType = -81
+	EOSType_MacOS11        EOSType = -80
+	EOSType_MacOS111       EOSType = -79
 	EOSType_MacOSMax       EOSType = -1
 	EOSType_LinuxUnknown   EOSType = -203
 	EOSType_Linux22        EOSType = -202
@@ -5537,6 +5552,9 @@ const (
 	EOSType_Linux414       EOSType = -188
 	EOSType_Linux419       EOSType = -187
 	EOSType_Linux5x        EOSType = -186
+	EOSType_Linux54        EOSType = -185
+	EOSType_Linux6x        EOSType = -184
+	EOSType_Linux7x        EOSType = -183
 	EOSType_LinuxMax       EOSType = -101
 	EOSType_WinUnknown     EOSType = 0
 	EOSType_Win311         EOSType = 1
@@ -5556,7 +5574,8 @@ const (
 	EOSType_Win2012R2      EOSType = 15
 	EOSType_Windows10      EOSType = 16
 	EOSType_Win2016        EOSType = 17
-	EOSType_WinMAX         EOSType = 18
+	EOSType_Win2019        EOSType = 18
+	EOSType_WinMAX         EOSType = 19
 )
 
 var EOSType_name = map[EOSType]string{
@@ -5616,6 +5635,9 @@ var EOSType_name = map[EOSType]string{
 	-84:  "EOSType_Macos1013",
 	-83:  "EOSType_Macos1014",
 	-82:  "EOSType_Macos1015",
+	-81:  "EOSType_MacOS1016",
+	-80:  "EOSType_MacOS11",
+	-79:  "EOSType_MacOS111",
 	-203: "EOSType_LinuxUnknown",
 	-202: "EOSType_Linux22",
 	-201: "EOSType_Linux24",
@@ -5634,6 +5656,9 @@ var EOSType_name = map[EOSType]string{
 	-188: "EOSType_Linux414",
 	-187: "EOSType_Linux419",
 	-186: "EOSType_Linux5x",
+	-185: "EOSType_Linux54",
+	-184: "EOSType_Linux6x",
+	-183: "EOSType_Linux7x",
 	0:    "EOSType_WinUnknown",
 	1:    "EOSType_Win311",
 	2:    "EOSType_Win95",
@@ -5652,7 +5677,8 @@ var EOSType_name = map[EOSType]string{
 	15:   "EOSType_Win2012R2",
 	16:   "EOSType_Win10",
 	17:   "EOSType_Win2016",
-	18:   "EOSType_WinMAX",
+	18:   "EOSType_Win2019",
+	19:   "EOSType_WinMAX",
 }
 
 func (e EOSType) String() string {
@@ -6003,6 +6029,39 @@ func (e EBillingType) String() string {
 	}
 	var flags []string
 	for k, v := range EBillingType_name {
+		if e&k != 0 {
+			flags = append(flags, v)
+		}
+	}
+	if len(flags) == 0 {
+		return fmt.Sprintf("%d", e)
+	}
+	sort.Strings(flags)
+	return strings.Join(flags, " | ")
+}
+
+type EPackageStatus int32
+
+const (
+	EPackageStatus_Available   EPackageStatus = 0
+	EPackageStatus_Preorder    EPackageStatus = 1
+	EPackageStatus_Unavailable EPackageStatus = 2
+	EPackageStatus_Invalid     EPackageStatus = 3
+)
+
+var EPackageStatus_name = map[EPackageStatus]string{
+	0: "EPackageStatus_Available",
+	1: "EPackageStatus_Preorder",
+	2: "EPackageStatus_Unavailable",
+	3: "EPackageStatus_Invalid",
+}
+
+func (e EPackageStatus) String() string {
+	if s, ok := EPackageStatus_name[e]; ok {
+		return s
+	}
+	var flags []string
+	for k, v := range EPackageStatus_name {
 		if e&k != 0 {
 			flags = append(flags, v)
 		}
@@ -7320,7 +7379,7 @@ const (
 	EAppType_Comic       EAppType = 32768
 	EAppType_Beta        EAppType = 65536
 	EAppType_Shortcut    EAppType = 1073741824
-	EAppType_DepotOnly   EAppType = -2147483648
+	EAppType_DepotOnly   EAppType = -2147483648 // Deprecated
 )
 
 var EAppType_name = map[EAppType]string{
