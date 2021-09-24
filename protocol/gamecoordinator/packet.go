@@ -3,9 +3,9 @@ package gamecoordinator
 import (
 	"bytes"
 
-	"github.com/anonfunc/go-steam/v3/protocol"
-	"github.com/anonfunc/go-steam/v3/protocol/protobuf"
-	"github.com/anonfunc/go-steam/v3/protocol/steamlang"
+	"github.com/an0nfunc/go-steam/v3/protocol"
+	"github.com/an0nfunc/go-steam/v3/protocol/protobuf"
+	"github.com/an0nfunc/go-steam/v3/protocol/steamlang"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -1,4 +1,4 @@
-module github.com/anonfunc/go-steam/v3
+module github.com/an0nfunc/go-steam/v3
 
 go 1.16
 
