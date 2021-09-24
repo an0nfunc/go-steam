@@ -1,4 +1,4 @@
-// Includes helper types for working with JSON data
+// Package jsont Includes helper types for working with JSON data
 package jsont
 
 import (
