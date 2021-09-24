@@ -18,7 +18,7 @@ import (
 	"strings"
 )
 
-var printCommands = false
+var printCommands = true
 
 func main() {
 	args := strings.Join(os.Args[1:], " ")
@@ -108,11 +108,13 @@ func buildProtoMap(srcSubdir string, files map[string]string, outDir string) {
 var clientProtoFiles = map[string]string{
 	"steammessages_base.proto":   "base.pb.go",
 	"encrypted_app_ticket.proto": "app_ticket.pb.go",
+	"enums.proto":                "enums.pb.go",
 
 	"steammessages_clientserver.proto":         "client_server.pb.go",
 	"steammessages_clientserver_2.proto":       "client_server_2.pb.go",
 	"steammessages_clientserver_friends.proto": "client_server_friends.pb.go",
 	"steammessages_clientserver_login.proto":   "client_server_login.pb.go",
+	"steammessages_client_objects.proto":       "client_objects.pb.go",
 	"steammessages_sitelicenseclient.proto":    "client_site_license.pb.go",
 
 	"content_manifest.proto": "content_manifest.pb.go",
