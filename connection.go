@@ -5,12 +5,11 @@ import (
 	"crypto/cipher"
 	"encoding/binary"
 	"fmt"
+	"github.com/an0nfunc/go-steam/v3/cryptoutil"
+	"github.com/an0nfunc/go-steam/v3/protocol"
 	"io"
 	"net"
 	"sync"
-
-	"github.com/an0nfunc/go-steam/v3/cryptoutil"
-	"github.com/an0nfunc/go-steam/v3/protocol"
 )
 
 type connection interface {
@@ -70,7 +69,11 @@ func (c *tcpConnection) Read() (*protocol.Packet, error) {
 	// Packets after ChannelEncryptResult are encrypted
 	c.cipherMutex.RLock()
 	if c.ciph != nil {
-		buf = cryptoutil.SymmetricDecrypt(c.ciph, buf)
+		buf, err = cryptoutil.SymmetricDecrypt(c.ciph, buf)
+		if err != nil {
+			c.cipherMutex.RUnlock()
+			return nil, err
+		}
 	}
 	c.cipherMutex.RUnlock()
 
@@ -81,7 +84,11 @@ func (c *tcpConnection) Read() (*protocol.Packet, error) {
 func (c *tcpConnection) Write(message []byte) error {
 	c.cipherMutex.RLock()
 	if c.ciph != nil {
-		message = cryptoutil.SymmetricEncrypt(c.ciph, message)
+		var err error
+		message, err = cryptoutil.SymmetricEncrypt(c.ciph, message)
+		if err != nil {
+			return err
+		}
 	}
 	c.cipherMutex.RUnlock()
 

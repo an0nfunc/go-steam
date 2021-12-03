@@ -119,16 +119,16 @@ var clientProtoFiles = map[string]string{
 
 	"content_manifest.proto": "content_manifest.pb.go",
 
-	"steammessages_unified_base.steamclient.proto":      "unified/base.pb.go",
-	"steammessages_cloud.steamclient.proto":             "unified/cloud.pb.go",
-	"steammessages_credentials.steamclient.proto":       "unified/credentials.pb.go",
-	"steammessages_deviceauth.steamclient.proto":        "unified/deviceauth.pb.go",
-	"steammessages_gamenotifications.steamclient.proto": "unified/gamenotifications.pb.go",
-	"steammessages_offline.steamclient.proto":           "unified/offline.pb.go",
-	"steammessages_parental.steamclient.proto":          "unified/parental.pb.go",
-	"steammessages_partnerapps.steamclient.proto":       "unified/partnerapps.pb.go",
-	"steammessages_player.steamclient.proto":            "unified/player.pb.go",
-	"steammessages_publishedfile.steamclient.proto":     "unified/publishedfile.pb.go",
+	"steammessages_unified_base.steamclient.proto":      "base_unified.pb.go",
+	"steammessages_cloud.steamclient.proto":             "cloud.pb.go",
+	"steammessages_credentials.steamclient.proto":       "credentials.pb.go",
+	"steammessages_deviceauth.steamclient.proto":        "deviceauth.pb.go",
+	"steammessages_gamenotifications.steamclient.proto": "gamenotifications.pb.go",
+	"steammessages_offline.steamclient.proto":           "offline.pb.go",
+	"steammessages_parental.steamclient.proto":          "parental.pb.go",
+	"steammessages_partnerapps.steamclient.proto":       "partnerapps.pb.go",
+	"steammessages_player.steamclient.proto":            "player.pb.go",
+	"steammessages_publishedfile.steamclient.proto":     "publishedfile.pb.go",
 }
 
 var tf2ProtoFiles = map[string]string{

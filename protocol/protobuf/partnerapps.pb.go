@@ -4,7 +4,7 @@
 // 	protoc        v3.17.3
 // source: steammessages_partnerapps.steamclient.proto
 
-package unified
+package protobuf
 
 import (
 	

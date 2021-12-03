@@ -12,11 +12,19 @@ func TestCrypt(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	encrypted := SymmetricEncrypt(ciph, src)
+	encrypted, err := SymmetricEncrypt(ciph, src)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if len(encrypted)%aes.BlockSize != 0 {
 		t.Fatalf("Encrypted text is not a multiple of the AES block size (got %v)", len(encrypted))
 	}
-	decrypted := SymmetricDecrypt(ciph, encrypted)
+	decrypted, err := SymmetricDecrypt(ciph, encrypted)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if len([]byte("Hello World!")) != len(decrypted) {
 		t.Fatalf("src length (%v) does not match decrypted length (%v)!", len([]byte("Hello World!")), len(decrypted))
 	}

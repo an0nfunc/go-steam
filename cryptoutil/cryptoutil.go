@@ -4,16 +4,17 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"fmt"
 )
 
-// Performs an encryption using AES/CBC/PKCS7
+// SymmetricEncrypt Performs an encryption using AES/CBC/PKCS7
 // with a random IV prepended using AES/ECB/None.
-func SymmetricEncrypt(ciph cipher.Block, src []byte) []byte {
+func SymmetricEncrypt(ciph cipher.Block, src []byte) ([]byte, error) {
 	// get a random IV and ECB encrypt it
 	iv := make([]byte, aes.BlockSize, aes.BlockSize)
 	_, err := rand.Read(iv)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	encryptedIv := make([]byte, aes.BlockSize, aes.BlockSize)
 	newECBEncrypter(ciph).CryptBlocks(encryptedIv, iv)
@@ -22,17 +23,25 @@ func SymmetricEncrypt(ciph cipher.Block, src []byte) []byte {
 	encrypted := padPKCS7WithIV(src)
 	copy(encrypted, encryptedIv)
 	cipher.NewCBCEncrypter(ciph, iv).CryptBlocks(encrypted[aes.BlockSize:], encrypted[aes.BlockSize:])
-	return encrypted
+	return encrypted, nil
 }
 
-// Decrypts data from the reader using AES/CBC/PKCS7 with an IV
+// SymmetricDecrypt Decrypts data from the reader using AES/CBC/PKCS7 with an IV
 // prepended using AES/ECB/None. The src slice may not be used anymore.
-func SymmetricDecrypt(ciph cipher.Block, src []byte) []byte {
+func SymmetricDecrypt(ciph cipher.Block, src []byte) ([]byte, error) {
+	if len(src) < aes.BlockSize {
+		return nil, fmt.Errorf("ciphertext too short")
+	}
+
 	iv := src[:aes.BlockSize]
 	newECBDecrypter(ciph).CryptBlocks(iv, iv)
 
 	data := src[aes.BlockSize:]
+
+	if len(data)%aes.BlockSize != 0 {
+		return nil, fmt.Errorf("ciphertext is not a multiple of the block size")
+	}
 	cipher.NewCBCDecrypter(ciph, iv).CryptBlocks(data, data)
 
-	return unpadPKCS7(data)
+	return unpadPKCS7(data), nil
 }

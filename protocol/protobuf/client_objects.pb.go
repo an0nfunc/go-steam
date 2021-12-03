@@ -962,18 +962,106 @@ func (x *CMsgSystemPerfDiagnosticEntry) GetValue() string {
 	return ""
 }
 
+type CMsgSystemPerfNetworkInterface struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name          *string  `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Timestamp     *float64 `protobuf:"fixed64,2,opt,name=timestamp" json:"timestamp,omitempty"`
+	TxBytesTotal  *int64   `protobuf:"varint,3,opt,name=tx_bytes_total,json=txBytesTotal" json:"tx_bytes_total,omitempty"`
+	RxBytesTotal  *int64   `protobuf:"varint,4,opt,name=rx_bytes_total,json=rxBytesTotal" json:"rx_bytes_total,omitempty"`
+	TxBytesPerSec *int32   `protobuf:"varint,5,opt,name=tx_bytes_per_sec,json=txBytesPerSec" json:"tx_bytes_per_sec,omitempty"`
+	RxBytesPerSec *int32   `protobuf:"varint,6,opt,name=rx_bytes_per_sec,json=rxBytesPerSec" json:"rx_bytes_per_sec,omitempty"`
+}
+
+func (x *CMsgSystemPerfNetworkInterface) Reset() {
+	*x = CMsgSystemPerfNetworkInterface{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_steammessages_client_objects_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CMsgSystemPerfNetworkInterface) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CMsgSystemPerfNetworkInterface) ProtoMessage() {}
+
+func (x *CMsgSystemPerfNetworkInterface) ProtoReflect() protoreflect.Message {
+	mi := &file_steammessages_client_objects_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CMsgSystemPerfNetworkInterface.ProtoReflect.Descriptor instead.
+func (*CMsgSystemPerfNetworkInterface) Descriptor() ([]byte, []int) {
+	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CMsgSystemPerfNetworkInterface) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *CMsgSystemPerfNetworkInterface) GetTimestamp() float64 {
+	if x != nil && x.Timestamp != nil {
+		return *x.Timestamp
+	}
+	return 0
+}
+
+func (x *CMsgSystemPerfNetworkInterface) GetTxBytesTotal() int64 {
+	if x != nil && x.TxBytesTotal != nil {
+		return *x.TxBytesTotal
+	}
+	return 0
+}
+
+func (x *CMsgSystemPerfNetworkInterface) GetRxBytesTotal() int64 {
+	if x != nil && x.RxBytesTotal != nil {
+		return *x.RxBytesTotal
+	}
+	return 0
+}
+
+func (x *CMsgSystemPerfNetworkInterface) GetTxBytesPerSec() int32 {
+	if x != nil && x.TxBytesPerSec != nil {
+		return *x.TxBytesPerSec
+	}
+	return 0
+}
+
+func (x *CMsgSystemPerfNetworkInterface) GetRxBytesPerSec() int32 {
+	if x != nil && x.RxBytesPerSec != nil {
+		return *x.RxBytesPerSec
+	}
+	return 0
+}
+
 type CMsgSystemPerfDiagnosticInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Entries []*CMsgSystemPerfDiagnosticEntry `protobuf:"bytes,1,rep,name=entries" json:"entries,omitempty"`
+	Entries    []*CMsgSystemPerfDiagnosticEntry  `protobuf:"bytes,1,rep,name=entries" json:"entries,omitempty"`
+	Interfaces []*CMsgSystemPerfNetworkInterface `protobuf:"bytes,2,rep,name=interfaces" json:"interfaces,omitempty"`
 }
 
 func (x *CMsgSystemPerfDiagnosticInfo) Reset() {
 	*x = CMsgSystemPerfDiagnosticInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[13]
+		mi := &file_steammessages_client_objects_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -986,7 +1074,7 @@ func (x *CMsgSystemPerfDiagnosticInfo) String() string {
 func (*CMsgSystemPerfDiagnosticInfo) ProtoMessage() {}
 
 func (x *CMsgSystemPerfDiagnosticInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[13]
+	mi := &file_steammessages_client_objects_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -999,12 +1087,19 @@ func (x *CMsgSystemPerfDiagnosticInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CMsgSystemPerfDiagnosticInfo.ProtoReflect.Descriptor instead.
 func (*CMsgSystemPerfDiagnosticInfo) Descriptor() ([]byte, []int) {
-	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{13}
+	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CMsgSystemPerfDiagnosticInfo) GetEntries() []*CMsgSystemPerfDiagnosticEntry {
 	if x != nil {
 		return x.Entries
+	}
+	return nil
+}
+
+func (x *CMsgSystemPerfDiagnosticInfo) GetInterfaces() []*CMsgSystemPerfNetworkInterface {
+	if x != nil {
+		return x.Interfaces
 	}
 	return nil
 }
@@ -1021,7 +1116,7 @@ type CMsgSystemPerfSettings struct {
 func (x *CMsgSystemPerfSettings) Reset() {
 	*x = CMsgSystemPerfSettings{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[14]
+		mi := &file_steammessages_client_objects_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1034,7 +1129,7 @@ func (x *CMsgSystemPerfSettings) String() string {
 func (*CMsgSystemPerfSettings) ProtoMessage() {}
 
 func (x *CMsgSystemPerfSettings) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[14]
+	mi := &file_steammessages_client_objects_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1047,7 +1142,7 @@ func (x *CMsgSystemPerfSettings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CMsgSystemPerfSettings.ProtoReflect.Descriptor instead.
 func (*CMsgSystemPerfSettings) Descriptor() ([]byte, []int) {
-	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{14}
+	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *CMsgSystemPerfSettings) GetDiagnosticUpdateRate() float32 {
@@ -1062,6 +1157,53 @@ func (x *CMsgSystemPerfSettings) GetIsSharkMode() bool {
 		return *x.IsSharkMode
 	}
 	return false
+}
+
+type CMsgCellList struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Cells []*CMsgCellList_Cell `protobuf:"bytes,1,rep,name=cells" json:"cells,omitempty"`
+}
+
+func (x *CMsgCellList) Reset() {
+	*x = CMsgCellList{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_steammessages_client_objects_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CMsgCellList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CMsgCellList) ProtoMessage() {}
+
+func (x *CMsgCellList) ProtoReflect() protoreflect.Message {
+	mi := &file_steammessages_client_objects_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CMsgCellList.ProtoReflect.Descriptor instead.
+func (*CMsgCellList) Descriptor() ([]byte, []int) {
+	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *CMsgCellList) GetCells() []*CMsgCellList_Cell {
+	if x != nil {
+		return x.Cells
+	}
+	return nil
 }
 
 type CMsgNetworkDevicesData_Device struct {
@@ -1089,7 +1231,7 @@ const (
 func (x *CMsgNetworkDevicesData_Device) Reset() {
 	*x = CMsgNetworkDevicesData_Device{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[15]
+		mi := &file_steammessages_client_objects_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1102,7 +1244,7 @@ func (x *CMsgNetworkDevicesData_Device) String() string {
 func (*CMsgNetworkDevicesData_Device) ProtoMessage() {}
 
 func (x *CMsgNetworkDevicesData_Device) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[15]
+	mi := &file_steammessages_client_objects_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1206,7 +1348,7 @@ const (
 func (x *CMsgNetworkDevicesData_Device_Wired) Reset() {
 	*x = CMsgNetworkDevicesData_Device_Wired{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[16]
+		mi := &file_steammessages_client_objects_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1219,7 +1361,7 @@ func (x *CMsgNetworkDevicesData_Device_Wired) String() string {
 func (*CMsgNetworkDevicesData_Device_Wired) ProtoMessage() {}
 
 func (x *CMsgNetworkDevicesData_Device_Wired) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[16]
+	mi := &file_steammessages_client_objects_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1268,7 +1410,7 @@ type CMsgNetworkDevicesData_Device_Wireless struct {
 func (x *CMsgNetworkDevicesData_Device_Wireless) Reset() {
 	*x = CMsgNetworkDevicesData_Device_Wireless{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[17]
+		mi := &file_steammessages_client_objects_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1281,7 +1423,7 @@ func (x *CMsgNetworkDevicesData_Device_Wireless) String() string {
 func (*CMsgNetworkDevicesData_Device_Wireless) ProtoMessage() {}
 
 func (x *CMsgNetworkDevicesData_Device_Wireless) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[17]
+	mi := &file_steammessages_client_objects_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1335,7 +1477,7 @@ const (
 func (x *CMsgNetworkDevicesData_Device_Wireless_AP) Reset() {
 	*x = CMsgNetworkDevicesData_Device_Wireless_AP{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[18]
+		mi := &file_steammessages_client_objects_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1348,7 +1490,7 @@ func (x *CMsgNetworkDevicesData_Device_Wireless_AP) String() string {
 func (*CMsgNetworkDevicesData_Device_Wireless_AP) ProtoMessage() {}
 
 func (x *CMsgNetworkDevicesData_Device_Wireless_AP) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[18]
+	mi := &file_steammessages_client_objects_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1438,7 +1580,7 @@ type CMsgNetworkDeviceConnect_KnownAP struct {
 func (x *CMsgNetworkDeviceConnect_KnownAP) Reset() {
 	*x = CMsgNetworkDeviceConnect_KnownAP{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[19]
+		mi := &file_steammessages_client_objects_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1451,7 +1593,7 @@ func (x *CMsgNetworkDeviceConnect_KnownAP) String() string {
 func (*CMsgNetworkDeviceConnect_KnownAP) ProtoMessage() {}
 
 func (x *CMsgNetworkDeviceConnect_KnownAP) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[19]
+	mi := &file_steammessages_client_objects_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1486,7 +1628,7 @@ type CMsgNetworkDeviceConnect_CustomAP struct {
 func (x *CMsgNetworkDeviceConnect_CustomAP) Reset() {
 	*x = CMsgNetworkDeviceConnect_CustomAP{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[20]
+		mi := &file_steammessages_client_objects_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1499,7 +1641,7 @@ func (x *CMsgNetworkDeviceConnect_CustomAP) String() string {
 func (*CMsgNetworkDeviceConnect_CustomAP) ProtoMessage() {}
 
 func (x *CMsgNetworkDeviceConnect_CustomAP) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[20]
+	mi := &file_steammessages_client_objects_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1541,7 +1683,7 @@ type CMsgNetworkDeviceConnect_Credentials struct {
 func (x *CMsgNetworkDeviceConnect_Credentials) Reset() {
 	*x = CMsgNetworkDeviceConnect_Credentials{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[21]
+		mi := &file_steammessages_client_objects_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1554,7 +1696,7 @@ func (x *CMsgNetworkDeviceConnect_Credentials) String() string {
 func (*CMsgNetworkDeviceConnect_Credentials) ProtoMessage() {}
 
 func (x *CMsgNetworkDeviceConnect_Credentials) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[21]
+	mi := &file_steammessages_client_objects_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1605,7 +1747,7 @@ const (
 func (x *CMsgStorageDevicesData_Drive) Reset() {
 	*x = CMsgStorageDevicesData_Drive{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[22]
+		mi := &file_steammessages_client_objects_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1618,7 +1760,7 @@ func (x *CMsgStorageDevicesData_Drive) String() string {
 func (*CMsgStorageDevicesData_Drive) ProtoMessage() {}
 
 func (x *CMsgStorageDevicesData_Drive) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[22]
+	mi := &file_steammessages_client_objects_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1706,7 +1848,7 @@ const (
 func (x *CMsgStorageDevicesData_BlockDevice) Reset() {
 	*x = CMsgStorageDevicesData_BlockDevice{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[23]
+		mi := &file_steammessages_client_objects_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1719,7 +1861,7 @@ func (x *CMsgStorageDevicesData_BlockDevice) String() string {
 func (*CMsgStorageDevicesData_BlockDevice) ProtoMessage() {}
 
 func (x *CMsgStorageDevicesData_BlockDevice) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[23]
+	mi := &file_steammessages_client_objects_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1839,7 +1981,7 @@ const (
 func (x *CMsgBluetoothDevicesData_Adapter) Reset() {
 	*x = CMsgBluetoothDevicesData_Adapter{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[24]
+		mi := &file_steammessages_client_objects_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1852,7 +1994,7 @@ func (x *CMsgBluetoothDevicesData_Adapter) String() string {
 func (*CMsgBluetoothDevicesData_Adapter) ProtoMessage() {}
 
 func (x *CMsgBluetoothDevicesData_Adapter) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[24]
+	mi := &file_steammessages_client_objects_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1928,7 +2070,7 @@ const (
 func (x *CMsgBluetoothDevicesData_Device) Reset() {
 	*x = CMsgBluetoothDevicesData_Device{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_steammessages_client_objects_proto_msgTypes[25]
+		mi := &file_steammessages_client_objects_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1941,7 +2083,7 @@ func (x *CMsgBluetoothDevicesData_Device) String() string {
 func (*CMsgBluetoothDevicesData_Device) ProtoMessage() {}
 
 func (x *CMsgBluetoothDevicesData_Device) ProtoReflect() protoreflect.Message {
-	mi := &file_steammessages_client_objects_proto_msgTypes[25]
+	mi := &file_steammessages_client_objects_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2011,6 +2153,61 @@ func (x *CMsgBluetoothDevicesData_Device) GetStrengthRaw() int32 {
 		return *x.StrengthRaw
 	}
 	return 0
+}
+
+type CMsgCellList_Cell struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CellId  *uint32 `protobuf:"varint,1,opt,name=cell_id,json=cellId" json:"cell_id,omitempty"`
+	LocName *string `protobuf:"bytes,2,opt,name=loc_name,json=locName" json:"loc_name,omitempty"`
+}
+
+func (x *CMsgCellList_Cell) Reset() {
+	*x = CMsgCellList_Cell{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_steammessages_client_objects_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CMsgCellList_Cell) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CMsgCellList_Cell) ProtoMessage() {}
+
+func (x *CMsgCellList_Cell) ProtoReflect() protoreflect.Message {
+	mi := &file_steammessages_client_objects_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CMsgCellList_Cell.ProtoReflect.Descriptor instead.
+func (*CMsgCellList_Cell) Descriptor() ([]byte, []int) {
+	return file_steammessages_client_objects_proto_rawDescGZIP(), []int{16, 0}
+}
+
+func (x *CMsgCellList_Cell) GetCellId() uint32 {
+	if x != nil && x.CellId != nil {
+		return *x.CellId
+	}
+	return 0
+}
+
+func (x *CMsgCellList_Cell) GetLocName() string {
+	if x != nil && x.LocName != nil {
+		return *x.LocName
+	}
+	return ""
 }
 
 var File_steammessages_client_objects_proto protoreflect.FileDescriptor
@@ -2295,38 +2492,64 @@ var file_steammessages_client_objects_proto_rawDesc = []byte{
 	0x73, 0x74, 0x69, 0x63, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a,
 	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61,
-	0x6c, 0x75, 0x65, 0x22, 0x58, 0x0a, 0x1c, 0x43, 0x4d, 0x73, 0x67, 0x53, 0x79, 0x73, 0x74, 0x65,
-	0x6d, 0x50, 0x65, 0x72, 0x66, 0x44, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73, 0x74, 0x69, 0x63, 0x49,
-	0x6e, 0x66, 0x6f, 0x12, 0x38, 0x0a, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x18, 0x01,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x43, 0x4d, 0x73, 0x67, 0x53, 0x79, 0x73, 0x74, 0x65,
-	0x6d, 0x50, 0x65, 0x72, 0x66, 0x44, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73, 0x74, 0x69, 0x63, 0x45,
-	0x6e, 0x74, 0x72, 0x79, 0x52, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x22, 0x72, 0x0a,
-	0x16, 0x43, 0x4d, 0x73, 0x67, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x50, 0x65, 0x72, 0x66, 0x53,
-	0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x12, 0x34, 0x0a, 0x16, 0x64, 0x69, 0x61, 0x67, 0x6e,
-	0x6f, 0x73, 0x74, 0x69, 0x63, 0x5f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x72, 0x61, 0x74,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x14, 0x64, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73,
-	0x74, 0x69, 0x63, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x61, 0x74, 0x65, 0x12, 0x22, 0x0a,
-	0x0d, 0x69, 0x73, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x6b, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x08, 0x52, 0x0b, 0x69, 0x73, 0x53, 0x68, 0x61, 0x72, 0x6b, 0x4d, 0x6f, 0x64,
-	0x65, 0x2a, 0x96, 0x02, 0x0a, 0x1c, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64,
-	0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x26, 0x0a, 0x22, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65,
-	0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x4e, 0x6f, 0x6e, 0x65, 0x10, 0x00, 0x12, 0x32, 0x0a, 0x2e, 0x6b, 0x5f,
-	0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d,
-	0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x70, 0x70, 0x53,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x10, 0x01, 0x12, 0x32,
-	0x0a, 0x2e, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e,
+	0x6c, 0x75, 0x65, 0x22, 0xf0, 0x01, 0x0a, 0x1e, 0x43, 0x4d, 0x73, 0x67, 0x53, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x50, 0x65, 0x72, 0x66, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x49, 0x6e, 0x74,
+	0x65, 0x72, 0x66, 0x61, 0x63, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69,
+	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x09, 0x74,
+	0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x24, 0x0a, 0x0e, 0x74, 0x78, 0x5f, 0x62,
+	0x79, 0x74, 0x65, 0x73, 0x5f, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x0c, 0x74, 0x78, 0x42, 0x79, 0x74, 0x65, 0x73, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x12, 0x24,
+	0x0a, 0x0e, 0x72, 0x78, 0x5f, 0x62, 0x79, 0x74, 0x65, 0x73, 0x5f, 0x74, 0x6f, 0x74, 0x61, 0x6c,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x72, 0x78, 0x42, 0x79, 0x74, 0x65, 0x73, 0x54,
+	0x6f, 0x74, 0x61, 0x6c, 0x12, 0x27, 0x0a, 0x10, 0x74, 0x78, 0x5f, 0x62, 0x79, 0x74, 0x65, 0x73,
+	0x5f, 0x70, 0x65, 0x72, 0x5f, 0x73, 0x65, 0x63, 0x18, 0x05, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d,
+	0x74, 0x78, 0x42, 0x79, 0x74, 0x65, 0x73, 0x50, 0x65, 0x72, 0x53, 0x65, 0x63, 0x12, 0x27, 0x0a,
+	0x10, 0x72, 0x78, 0x5f, 0x62, 0x79, 0x74, 0x65, 0x73, 0x5f, 0x70, 0x65, 0x72, 0x5f, 0x73, 0x65,
+	0x63, 0x18, 0x06, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d, 0x72, 0x78, 0x42, 0x79, 0x74, 0x65, 0x73,
+	0x50, 0x65, 0x72, 0x53, 0x65, 0x63, 0x22, 0x99, 0x01, 0x0a, 0x1c, 0x43, 0x4d, 0x73, 0x67, 0x53,
+	0x79, 0x73, 0x74, 0x65, 0x6d, 0x50, 0x65, 0x72, 0x66, 0x44, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73,
+	0x74, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x38, 0x0a, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69,
+	0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x43, 0x4d, 0x73, 0x67, 0x53,
+	0x79, 0x73, 0x74, 0x65, 0x6d, 0x50, 0x65, 0x72, 0x66, 0x44, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73,
+	0x74, 0x69, 0x63, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65,
+	0x73, 0x12, 0x3f, 0x0a, 0x0a, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x66, 0x61, 0x63, 0x65, 0x73, 0x18,
+	0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x43, 0x4d, 0x73, 0x67, 0x53, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x50, 0x65, 0x72, 0x66, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x49, 0x6e, 0x74,
+	0x65, 0x72, 0x66, 0x61, 0x63, 0x65, 0x52, 0x0a, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x66, 0x61, 0x63,
+	0x65, 0x73, 0x22, 0x72, 0x0a, 0x16, 0x43, 0x4d, 0x73, 0x67, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d,
+	0x50, 0x65, 0x72, 0x66, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x12, 0x34, 0x0a, 0x16,
+	0x64, 0x69, 0x61, 0x67, 0x6e, 0x6f, 0x73, 0x74, 0x69, 0x63, 0x5f, 0x75, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x14, 0x64, 0x69,
+	0x61, 0x67, 0x6e, 0x6f, 0x73, 0x74, 0x69, 0x63, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x61,
+	0x74, 0x65, 0x12, 0x22, 0x0a, 0x0d, 0x69, 0x73, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x6b, 0x5f, 0x6d,
+	0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0b, 0x69, 0x73, 0x53, 0x68, 0x61,
+	0x72, 0x6b, 0x4d, 0x6f, 0x64, 0x65, 0x22, 0x74, 0x0a, 0x0c, 0x43, 0x4d, 0x73, 0x67, 0x43, 0x65,
+	0x6c, 0x6c, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x05, 0x63, 0x65, 0x6c, 0x6c, 0x73, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x43, 0x4d, 0x73, 0x67, 0x43, 0x65, 0x6c, 0x6c,
+	0x4c, 0x69, 0x73, 0x74, 0x2e, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x05, 0x63, 0x65, 0x6c, 0x6c, 0x73,
+	0x1a, 0x3a, 0x0a, 0x04, 0x43, 0x65, 0x6c, 0x6c, 0x12, 0x17, 0x0a, 0x07, 0x63, 0x65, 0x6c, 0x6c,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x63, 0x65, 0x6c, 0x6c, 0x49,
+	0x64, 0x12, 0x19, 0x0a, 0x08, 0x6c, 0x6f, 0x63, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x6c, 0x6f, 0x63, 0x4e, 0x61, 0x6d, 0x65, 0x2a, 0x96, 0x02, 0x0a,
+	0x1c, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65,
+	0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x0a,
+	0x22, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67,
+	0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x4e,
+	0x6f, 0x6e, 0x65, 0x10, 0x00, 0x12, 0x32, 0x0a, 0x2e, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75,
+	0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70,
+	0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x70, 0x70, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x10, 0x01, 0x12, 0x32, 0x0a, 0x2e, 0x6b, 0x5f, 0x45,
+	0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d, 0x6f,
+	0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x70, 0x6c, 0x6f, 0x61,
+	0x64, 0x49, 0x6e, 0x50, 0x72, 0x6f, 0x67, 0x72, 0x65, 0x73, 0x73, 0x10, 0x02, 0x12, 0x2f, 0x0a,
+	0x2b, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67,
+	0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x55,
+	0x70, 0x6c, 0x6f, 0x61, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x10, 0x03, 0x12, 0x35,
+	0x0a, 0x31, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e,
 	0x67, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x49, 0x6e, 0x50, 0x72, 0x6f, 0x67, 0x72, 0x65, 0x73, 0x73,
-	0x10, 0x02, 0x12, 0x2f, 0x0a, 0x2b, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50, 0x65,
-	0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x50, 0x65, 0x6e, 0x64, 0x69, 0x6e,
-	0x67, 0x10, 0x03, 0x12, 0x35, 0x0a, 0x31, 0x6b, 0x5f, 0x45, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x50,
-	0x65, 0x6e, 0x64, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x6d, 0x6f, 0x74, 0x65, 0x4f, 0x70, 0x65, 0x72,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x70, 0x70, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x53,
-	0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x65, 0x64, 0x10, 0x04, 0x42, 0x05, 0x48, 0x01, 0x80, 0x01,
-	0x00,
+	0x41, 0x70, 0x70, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e,
+	0x64, 0x65, 0x64, 0x10, 0x04, 0x42, 0x05, 0x48, 0x01, 0x80, 0x01, 0x00,
 }
 
 var (
@@ -2342,7 +2565,7 @@ func file_steammessages_client_objects_proto_rawDescGZIP() []byte {
 }
 
 var file_steammessages_client_objects_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_steammessages_client_objects_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
+var file_steammessages_client_objects_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_steammessages_client_objects_proto_goTypes = []interface{}{
 	(ECloudPendingRemoteOperation)(0),                        // 0: ECloudPendingRemoteOperation
 	(*SteamMessagesClientIClientForcedEnumDependencies)(nil), // 1: SteamMessagesClientIClientForcedEnumDependencies
@@ -2358,55 +2581,60 @@ var file_steammessages_client_objects_proto_goTypes = []interface{}{
 	(*CMsgBluetoothDevicesData)(nil),                         // 11: CMsgBluetoothDevicesData
 	(*CMsgBluetoothSettings)(nil),                            // 12: CMsgBluetoothSettings
 	(*CMsgSystemPerfDiagnosticEntry)(nil),                    // 13: CMsgSystemPerfDiagnosticEntry
-	(*CMsgSystemPerfDiagnosticInfo)(nil),                     // 14: CMsgSystemPerfDiagnosticInfo
-	(*CMsgSystemPerfSettings)(nil),                           // 15: CMsgSystemPerfSettings
-	(*CMsgNetworkDevicesData_Device)(nil),                    // 16: CMsgNetworkDevicesData.Device
-	(*CMsgNetworkDevicesData_Device_Wired)(nil),              // 17: CMsgNetworkDevicesData.Device.Wired
-	(*CMsgNetworkDevicesData_Device_Wireless)(nil),           // 18: CMsgNetworkDevicesData.Device.Wireless
-	(*CMsgNetworkDevicesData_Device_Wireless_AP)(nil),        // 19: CMsgNetworkDevicesData.Device.Wireless.AP
-	(*CMsgNetworkDeviceConnect_KnownAP)(nil),                 // 20: CMsgNetworkDeviceConnect.KnownAP
-	(*CMsgNetworkDeviceConnect_CustomAP)(nil),                // 21: CMsgNetworkDeviceConnect.CustomAP
-	(*CMsgNetworkDeviceConnect_Credentials)(nil),             // 22: CMsgNetworkDeviceConnect.Credentials
-	(*CMsgStorageDevicesData_Drive)(nil),                     // 23: CMsgStorageDevicesData.Drive
-	(*CMsgStorageDevicesData_BlockDevice)(nil),               // 24: CMsgStorageDevicesData.BlockDevice
-	(*CMsgBluetoothDevicesData_Adapter)(nil),                 // 25: CMsgBluetoothDevicesData.Adapter
-	(*CMsgBluetoothDevicesData_Device)(nil),                  // 26: CMsgBluetoothDevicesData.Device
-	(EBluetoothDeviceType)(0),                    // 27: EBluetoothDeviceType
-	(EStorageBlockContentType)(0),                // 28: EStorageBlockContentType
-	(EStorageBlockFileSystemType)(0),             // 29: EStorageBlockFileSystemType
+	(*CMsgSystemPerfNetworkInterface)(nil),                   // 14: CMsgSystemPerfNetworkInterface
+	(*CMsgSystemPerfDiagnosticInfo)(nil),                     // 15: CMsgSystemPerfDiagnosticInfo
+	(*CMsgSystemPerfSettings)(nil),                           // 16: CMsgSystemPerfSettings
+	(*CMsgCellList)(nil),                                     // 17: CMsgCellList
+	(*CMsgNetworkDevicesData_Device)(nil),                    // 18: CMsgNetworkDevicesData.Device
+	(*CMsgNetworkDevicesData_Device_Wired)(nil),              // 19: CMsgNetworkDevicesData.Device.Wired
+	(*CMsgNetworkDevicesData_Device_Wireless)(nil),           // 20: CMsgNetworkDevicesData.Device.Wireless
+	(*CMsgNetworkDevicesData_Device_Wireless_AP)(nil),        // 21: CMsgNetworkDevicesData.Device.Wireless.AP
+	(*CMsgNetworkDeviceConnect_KnownAP)(nil),                 // 22: CMsgNetworkDeviceConnect.KnownAP
+	(*CMsgNetworkDeviceConnect_CustomAP)(nil),                // 23: CMsgNetworkDeviceConnect.CustomAP
+	(*CMsgNetworkDeviceConnect_Credentials)(nil),             // 24: CMsgNetworkDeviceConnect.Credentials
+	(*CMsgStorageDevicesData_Drive)(nil),                     // 25: CMsgStorageDevicesData.Drive
+	(*CMsgStorageDevicesData_BlockDevice)(nil),               // 26: CMsgStorageDevicesData.BlockDevice
+	(*CMsgBluetoothDevicesData_Adapter)(nil),                 // 27: CMsgBluetoothDevicesData.Adapter
+	(*CMsgBluetoothDevicesData_Device)(nil),                  // 28: CMsgBluetoothDevicesData.Device
+	(*CMsgCellList_Cell)(nil),                                // 29: CMsgCellList.Cell
+	(EBluetoothDeviceType)(0),                    // 30: EBluetoothDeviceType
+	(EStorageBlockContentType)(0),                // 31: EStorageBlockContentType
+	(EStorageBlockFileSystemType)(0),             // 32: EStorageBlockFileSystemType
 }
 var file_steammessages_client_objects_proto_depIdxs = []int32{
-	27, // 0: SteamMessagesClientIClientForcedEnumDependencies.a:type_name -> EBluetoothDeviceType
-	28, // 1: SteamMessagesClientIClientForcedEnumDependencies.b:type_name -> EStorageBlockContentType
-	29, // 2: SteamMessagesClientIClientForcedEnumDependencies.c:type_name -> EStorageBlockFileSystemType
+	30, // 0: SteamMessagesClientIClientForcedEnumDependencies.a:type_name -> EBluetoothDeviceType
+	31, // 1: SteamMessagesClientIClientForcedEnumDependencies.b:type_name -> EStorageBlockContentType
+	32, // 2: SteamMessagesClientIClientForcedEnumDependencies.c:type_name -> EStorageBlockFileSystemType
 	2,  // 3: CMsgNetworkDeviceIP4Config.addresses:type_name -> CMsgNetworkDeviceIP4Address
 	4,  // 4: CMsgNetworkDeviceIP6Config.addresses:type_name -> CMsgNetworkDeviceIP6Address
-	16, // 5: CMsgNetworkDevicesData.devices:type_name -> CMsgNetworkDevicesData.Device
-	22, // 6: CMsgNetworkDeviceConnect.credentials:type_name -> CMsgNetworkDeviceConnect.Credentials
+	18, // 5: CMsgNetworkDevicesData.devices:type_name -> CMsgNetworkDevicesData.Device
+	24, // 6: CMsgNetworkDeviceConnect.credentials:type_name -> CMsgNetworkDeviceConnect.Credentials
 	3,  // 7: CMsgNetworkDeviceConnect.ip4:type_name -> CMsgNetworkDeviceIP4Config
 	5,  // 8: CMsgNetworkDeviceConnect.ip6:type_name -> CMsgNetworkDeviceIP6Config
-	20, // 9: CMsgNetworkDeviceConnect.ap_known:type_name -> CMsgNetworkDeviceConnect.KnownAP
-	21, // 10: CMsgNetworkDeviceConnect.ap_custom:type_name -> CMsgNetworkDeviceConnect.CustomAP
-	23, // 11: CMsgStorageDevicesData.drives:type_name -> CMsgStorageDevicesData.Drive
-	24, // 12: CMsgStorageDevicesData.block_devices:type_name -> CMsgStorageDevicesData.BlockDevice
+	22, // 9: CMsgNetworkDeviceConnect.ap_known:type_name -> CMsgNetworkDeviceConnect.KnownAP
+	23, // 10: CMsgNetworkDeviceConnect.ap_custom:type_name -> CMsgNetworkDeviceConnect.CustomAP
+	25, // 11: CMsgStorageDevicesData.drives:type_name -> CMsgStorageDevicesData.Drive
+	26, // 12: CMsgStorageDevicesData.block_devices:type_name -> CMsgStorageDevicesData.BlockDevice
 	0,  // 13: CCloud_PendingRemoteOperation.operation:type_name -> ECloudPendingRemoteOperation
 	9,  // 14: CMsgCloudPendingRemoteOperations.operations:type_name -> CCloud_PendingRemoteOperation
-	25, // 15: CMsgBluetoothDevicesData.adapters:type_name -> CMsgBluetoothDevicesData.Adapter
-	26, // 16: CMsgBluetoothDevicesData.devices:type_name -> CMsgBluetoothDevicesData.Device
+	27, // 15: CMsgBluetoothDevicesData.adapters:type_name -> CMsgBluetoothDevicesData.Adapter
+	28, // 16: CMsgBluetoothDevicesData.devices:type_name -> CMsgBluetoothDevicesData.Device
 	13, // 17: CMsgSystemPerfDiagnosticInfo.entries:type_name -> CMsgSystemPerfDiagnosticEntry
-	3,  // 18: CMsgNetworkDevicesData.Device.ip4:type_name -> CMsgNetworkDeviceIP4Config
-	5,  // 19: CMsgNetworkDevicesData.Device.ip6:type_name -> CMsgNetworkDeviceIP6Config
-	17, // 20: CMsgNetworkDevicesData.Device.wired:type_name -> CMsgNetworkDevicesData.Device.Wired
-	18, // 21: CMsgNetworkDevicesData.Device.wireless:type_name -> CMsgNetworkDevicesData.Device.Wireless
-	19, // 22: CMsgNetworkDevicesData.Device.Wireless.aps:type_name -> CMsgNetworkDevicesData.Device.Wireless.AP
-	28, // 23: CMsgStorageDevicesData.BlockDevice.content_type:type_name -> EStorageBlockContentType
-	29, // 24: CMsgStorageDevicesData.BlockDevice.filesystem_type:type_name -> EStorageBlockFileSystemType
-	27, // 25: CMsgBluetoothDevicesData.Device.etype:type_name -> EBluetoothDeviceType
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	14, // 18: CMsgSystemPerfDiagnosticInfo.interfaces:type_name -> CMsgSystemPerfNetworkInterface
+	29, // 19: CMsgCellList.cells:type_name -> CMsgCellList.Cell
+	3,  // 20: CMsgNetworkDevicesData.Device.ip4:type_name -> CMsgNetworkDeviceIP4Config
+	5,  // 21: CMsgNetworkDevicesData.Device.ip6:type_name -> CMsgNetworkDeviceIP6Config
+	19, // 22: CMsgNetworkDevicesData.Device.wired:type_name -> CMsgNetworkDevicesData.Device.Wired
+	20, // 23: CMsgNetworkDevicesData.Device.wireless:type_name -> CMsgNetworkDevicesData.Device.Wireless
+	21, // 24: CMsgNetworkDevicesData.Device.Wireless.aps:type_name -> CMsgNetworkDevicesData.Device.Wireless.AP
+	31, // 25: CMsgStorageDevicesData.BlockDevice.content_type:type_name -> EStorageBlockContentType
+	32, // 26: CMsgStorageDevicesData.BlockDevice.filesystem_type:type_name -> EStorageBlockFileSystemType
+	30, // 27: CMsgBluetoothDevicesData.Device.etype:type_name -> EBluetoothDeviceType
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_steammessages_client_objects_proto_init() }
@@ -2572,7 +2800,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgSystemPerfDiagnosticInfo); i {
+			switch v := v.(*CMsgSystemPerfNetworkInterface); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2584,7 +2812,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgSystemPerfSettings); i {
+			switch v := v.(*CMsgSystemPerfDiagnosticInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2596,7 +2824,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDevicesData_Device); i {
+			switch v := v.(*CMsgSystemPerfSettings); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2608,7 +2836,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDevicesData_Device_Wired); i {
+			switch v := v.(*CMsgCellList); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2620,7 +2848,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDevicesData_Device_Wireless); i {
+			switch v := v.(*CMsgNetworkDevicesData_Device); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2632,7 +2860,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDevicesData_Device_Wireless_AP); i {
+			switch v := v.(*CMsgNetworkDevicesData_Device_Wired); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2644,7 +2872,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDeviceConnect_KnownAP); i {
+			switch v := v.(*CMsgNetworkDevicesData_Device_Wireless); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2656,7 +2884,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDeviceConnect_CustomAP); i {
+			switch v := v.(*CMsgNetworkDevicesData_Device_Wireless_AP); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2668,7 +2896,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgNetworkDeviceConnect_Credentials); i {
+			switch v := v.(*CMsgNetworkDeviceConnect_KnownAP); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2680,7 +2908,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgStorageDevicesData_Drive); i {
+			switch v := v.(*CMsgNetworkDeviceConnect_CustomAP); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2692,7 +2920,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgStorageDevicesData_BlockDevice); i {
+			switch v := v.(*CMsgNetworkDeviceConnect_Credentials); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2704,7 +2932,7 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CMsgBluetoothDevicesData_Adapter); i {
+			switch v := v.(*CMsgStorageDevicesData_Drive); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2716,7 +2944,43 @@ func file_steammessages_client_objects_proto_init() {
 			}
 		}
 		file_steammessages_client_objects_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CMsgStorageDevicesData_BlockDevice); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_steammessages_client_objects_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CMsgBluetoothDevicesData_Adapter); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_steammessages_client_objects_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CMsgBluetoothDevicesData_Device); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_steammessages_client_objects_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CMsgCellList_Cell); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2738,7 +3002,7 @@ func file_steammessages_client_objects_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_steammessages_client_objects_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   26,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -21,7 +21,7 @@ import (
 	"github.com/an0nfunc/go-steam/v3/steamid"
 )
 
-// Represents a client to the Steam network.
+// Client Represents a client to the Steam network.
 // Always poll events from the channel returned by Events() or receiving messages will stop.
 // All access, unless otherwise noted, should be threadsafe.
 //
@@ -87,7 +87,7 @@ func NewClient() *Client {
 	return client
 }
 
-// Get the event channel. By convention all events are pointers, except for errors.
+// Events Get the event channel. By convention all events are pointers, except for errors.
 // It is never closed.
 func (c *Client) Events() <-chan interface{} {
 	return c.events
@@ -97,18 +97,18 @@ func (c *Client) Emit(event interface{}) {
 	c.events <- event
 }
 
-// Emits a FatalErrorEvent formatted with fmt.Errorf and disconnects.
+// Fatalf Emits a FatalErrorEvent formatted with fmt.Errorf and disconnects.
 func (c *Client) Fatalf(format string, a ...interface{}) {
 	c.Emit(FatalErrorEvent(fmt.Errorf(format, a...)))
 	c.Disconnect()
 }
 
-// Emits an error formatted with fmt.Errorf.
+// Errorf Emits an error formatted with fmt.Errorf.
 func (c *Client) Errorf(format string, a ...interface{}) {
 	c.Emit(fmt.Errorf(format, a...))
 }
 
-// Registers a PacketHandler that receives all incoming packets.
+// RegisterPacketHandler Registers a PacketHandler that receives all incoming packets.
 func (c *Client) RegisterPacketHandler(handler PacketHandler) {
 	c.handlersMutex.Lock()
 	defer c.handlersMutex.Unlock()
@@ -133,7 +133,7 @@ func (c *Client) Connected() bool {
 	return c.conn != nil
 }
 
-// Connects to a random Steam server and returns its address.
+// Connect to a random Steam server and returns its address.
 // If this client is already connected, it is disconnected first.
 // This method tries to use an address from the Steam Directory and falls
 // back to the built-in server list if the Steam Directory can't be reached.
@@ -155,14 +155,14 @@ func (c *Client) Connect() (*netutil.PortAddr, error) {
 	return server, err
 }
 
-// Connects to a specific server.
+// ConnectTo connects to a specific server.
 // You may want to use one of the `GetRandom*CM()` functions in this package.
 // If this client is already connected, it is disconnected first.
 func (c *Client) ConnectTo(addr *netutil.PortAddr) error {
 	return c.ConnectToBind(addr, nil)
 }
 
-// Connects to a specific server, and binds to a specified local IP
+// ConnectToBind connects to a specific server, and binds to a specified local IP
 // If this client is already connected, it is disconnected first.
 func (c *Client) ConnectToBind(addr *netutil.PortAddr, local *net.TCPAddr) error {
 	c.Disconnect()
@@ -306,7 +306,7 @@ func (c *Client) handleChannelEncryptRequest(packet *protocol.Packet) {
 	packet.ReadMsg(body)
 
 	if body.Universe != steamlang.EUniverse_Public {
-		c.Fatalf("Invalid univserse %v!", body.Universe)
+		c.Fatalf("Invalid universe %v!", body.Universe)
 	}
 
 	c.tempSessionKey = make([]byte, 32)
@@ -380,8 +380,8 @@ func (c *Client) handleClientCMList(packet *protocol.Packet) {
 	l := make([]*netutil.PortAddr, 0)
 	for i, ip := range body.GetCmAddresses() {
 		l = append(l, &netutil.PortAddr{
-			readIp(ip),
-			uint16(body.GetCmPorts()[i]),
+			IP:   readIp(ip),
+			Port: uint16(body.GetCmPorts()[i]),
 		})
 	}
 
