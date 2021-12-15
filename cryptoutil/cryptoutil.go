@@ -43,5 +43,10 @@ func SymmetricDecrypt(ciph cipher.Block, src []byte) ([]byte, error) {
 	}
 	cipher.NewCBCDecrypter(ciph, iv).CryptBlocks(data, data)
 
-	return unpadPKCS7(data), nil
+	unpadded, err := unPadPKCS7(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return unpadded, nil
 }

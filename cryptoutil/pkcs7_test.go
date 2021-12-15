@@ -18,7 +18,10 @@ func TestPKCS7Pad(t *testing.T) {
 
 func TestPKCS7Unpad(t *testing.T) {
 	in := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 4, 4, 4, 4}
-	out := unpadPKCS7(in)
+	out, err := unPadPKCS7(in)
+	if err != nil {
+		t.Fatalf("Error unpadding: %v", err)
+	}
 	if len(out) != 12 {
 		t.Fatalf("Invalid output size, expected 12 and got %v", len(out))
 	}

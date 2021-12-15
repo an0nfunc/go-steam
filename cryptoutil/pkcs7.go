@@ -2,6 +2,7 @@ package cryptoutil
 
 import (
 	"crypto/aes"
+	"fmt"
 )
 
 // Returns a new byte array padded with PKCS7 and prepended
@@ -19,7 +20,11 @@ func padPKCS7WithIV(src []byte) []byte {
 	return dest
 }
 
-func unpadPKCS7(src []byte) []byte {
+func unPadPKCS7(src []byte) ([]byte, error) {
 	padLen := src[len(src)-1]
-	return src[:len(src)-int(padLen)]
+	if len(src) < len(src)-int(padLen) {
+		return nil, fmt.Errorf("unpad not possible")
+	} else {
+		return src[:len(src)-int(padLen)], nil
+	}
 }
