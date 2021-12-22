@@ -26,7 +26,7 @@ func unPadPKCS7(src []byte) ([]byte, error) {
 	}
 
 	padLen := src[len(src)-1]
-	if len(src) < len(src)-int(padLen) {
+	if len(src) < len(src)-int(padLen) || len(src)-int(padLen) < 0 {
 		return nil, fmt.Errorf("unpad not possible")
 	} else {
 		return src[:len(src)-int(padLen)], nil
