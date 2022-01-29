@@ -52,6 +52,7 @@ func clean() {
 
 	os.Remove("../protocol/steamlang/enums.go")
 	os.Remove("../protocol/steamlang/messages.go")
+	_ = os.Remove("Protobufs/google/protobuf/valve_extensions.proto")
 }
 
 func cleanGlob(pattern string) {
@@ -73,10 +74,21 @@ func buildSteamLanguage() {
 func buildProto() {
 	print("# Building Protobufs")
 
+	valveEx, err := os.ReadFile("valve_extensions.proto")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile("Protobufs/google/protobuf/valve_extensions.proto", valveEx, 0644)
+	if err != nil {
+		panic(err)
+	}
+
 	buildProtoMap("steam", clientProtoFiles, "../protocol/protobuf")
 	buildProtoMap("tf2", tf2ProtoFiles, "../tf2/protocol/protobuf")
 	buildProtoMap("dota2", dotaProtoFiles, "../dota/protocol/protobuf")
 	buildProtoMap("csgo", csgoProtoFiles, "../csgo/protocol/protobuf")
+
+	_ = os.Remove("Protobufs/google/protobuf/valve_extensions.proto")
 }
 
 func buildProtoMap(srcSubdir string, files map[string]string, outDir string) {
@@ -85,6 +97,7 @@ func buildProtoMap(srcSubdir string, files map[string]string, outDir string) {
 	var opt []string
 
 	opt = append(opt, "--go_opt=Mgoogle/protobuf/descriptor.proto=google/protobuf/descriptor.proto")
+	opt = append(opt, "--go_opt=Mgoogle/protobuf/valve_extensions.proto=google/protobuf/valve_extensions.proto")
 
 	for proto := range files {
 		opt = append(opt, "--go_opt=Msteammessages.proto=Protobufs/"+srcSubdir+"/steammessages.proto")

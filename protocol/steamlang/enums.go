@@ -5539,6 +5539,9 @@ const (
 	EOSType_MacOS1016      EOSType = -81
 	EOSType_MacOS11        EOSType = -80
 	EOSType_MacOS111       EOSType = -79
+	EOSType_MacOS1017      EOSType = -78
+	EOSType_MacOS12        EOSType = -77
+	EOSType_MacOS13        EOSType = -76
 	EOSType_MacOSMax       EOSType = -1
 	EOSType_LinuxUnknown   EOSType = -203
 	EOSType_Linux22        EOSType = -202
@@ -5561,6 +5564,7 @@ const (
 	EOSType_Linux54        EOSType = -185
 	EOSType_Linux6x        EOSType = -184
 	EOSType_Linux7x        EOSType = -183
+	EOSType_Linux510       EOSType = -182
 	EOSType_LinuxMax       EOSType = -101
 	EOSType_WinUnknown     EOSType = 0
 	EOSType_Win311         EOSType = 1
@@ -5581,7 +5585,9 @@ const (
 	EOSType_Windows10      EOSType = 16
 	EOSType_Win2016        EOSType = 17
 	EOSType_Win2019        EOSType = 18
-	EOSType_WinMAX         EOSType = 19
+	EOSType_Win2022        EOSType = 19
+	EOSType_Win11          EOSType = 20
+	EOSType_WinMAX         EOSType = 21
 )
 
 var EOSType_name = map[EOSType]string{
@@ -5644,6 +5650,9 @@ var EOSType_name = map[EOSType]string{
 	-81:  "EOSType_MacOS1016",
 	-80:  "EOSType_MacOS11",
 	-79:  "EOSType_MacOS111",
+	-78:  "EOSType_MacOS1017",
+	-77:  "EOSType_MacOS12",
+	-76:  "EOSType_MacOS13",
 	-203: "EOSType_LinuxUnknown",
 	-202: "EOSType_Linux22",
 	-201: "EOSType_Linux24",
@@ -5665,6 +5674,7 @@ var EOSType_name = map[EOSType]string{
 	-185: "EOSType_Linux54",
 	-184: "EOSType_Linux6x",
 	-183: "EOSType_Linux7x",
+	-182: "EOSType_Linux510",
 	0:    "EOSType_WinUnknown",
 	1:    "EOSType_Win311",
 	2:    "EOSType_Win95",
@@ -5684,7 +5694,9 @@ var EOSType_name = map[EOSType]string{
 	16:   "EOSType_Win10",
 	17:   "EOSType_Win2016",
 	18:   "EOSType_Win2019",
-	19:   "EOSType_WinMAX",
+	19:   "EOSType_Win2022",
+	20:   "EOSType_Win11",
+	21:   "EOSType_WinMAX",
 }
 
 func (e EOSType) String() string {
