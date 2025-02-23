@@ -11,7 +11,7 @@ import (
 
 // TODO: Headers are always deserialized twice.
 
-// Represents an incoming, partially unread message.
+// Packet Represents an incoming, partially unread message.
 type Packet struct {
 	EMsg        steamlang.EMsg
 	IsProto     bool

@@ -10,7 +10,6 @@ import (
 	"go/parser"
 	"go/token"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -18,7 +17,7 @@ import (
 	"strings"
 )
 
-var printCommands = true
+var printCommands = false
 
 func main() {
 	args := strings.Join(os.Args[1:], " ")
@@ -38,7 +37,7 @@ func main() {
 	}
 
 	if !found {
-		os.Stderr.WriteString("Invalid target!\nAvailable targets: clean, proto, steamlang\n")
+		_, _ = fmt.Fprintln(os.Stderr, "Invalid target!\nAvailable targets: clean, proto, steamlang")
 		os.Exit(1)
 	}
 }
@@ -50,9 +49,8 @@ func clean() {
 	cleanGlob("../dota/protocol/**/*.pb.go")
 	cleanGlob("../csgo/protocol/**/*.pb.go")
 
-	os.Remove("../protocol/steamlang/enums.go")
-	os.Remove("../protocol/steamlang/messages.go")
-	_ = os.Remove("Protobufs/google/protobuf/valve_extensions.proto")
+	_ = os.Remove("../protocol/steamlang/enums.go")
+	_ = os.Remove("../protocol/steamlang/messages.go")
 }
 
 func cleanGlob(pattern string) {
@@ -74,15 +72,6 @@ func buildSteamLanguage() {
 func buildProto() {
 	print("# Building Protobufs")
 
-	valveEx, err := os.ReadFile("valve_extensions.proto")
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile("Protobufs/google/protobuf/valve_extensions.proto", valveEx, 0644)
-	if err != nil {
-		panic(err)
-	}
-
 	buildProtoMap("steam", clientProtoFiles, "../protocol/protobuf")
 	buildProtoMap("tf2", tf2ProtoFiles, "../tf2/protocol/protobuf")
 	buildProtoMap("dota2", dotaProtoFiles, "../dota/protocol/protobuf")
@@ -98,6 +87,8 @@ func buildProtoMap(srcSubdir string, files map[string]string, outDir string) {
 
 	opt = append(opt, "--go_opt=Mgoogle/protobuf/descriptor.proto=google/protobuf/descriptor.proto")
 	opt = append(opt, "--go_opt=Mgoogle/protobuf/valve_extensions.proto=google/protobuf/valve_extensions.proto")
+	opt = append(opt, "--go_opt=Msteammessages_unified_base.steamworkssdk.proto=steammessages_unified_base.steamworkssdk.proto")
+	opt = append(opt, "--go_opt=Msteammessages_steamlearn.steamworkssdk.proto=steammessages_steamlearn.steamworkssdk.proto")
 
 	for proto := range files {
 		opt = append(opt, "--go_opt=Msteammessages.proto=Protobufs/"+srcSubdir+"/steammessages.proto")
@@ -142,6 +133,9 @@ var clientProtoFiles = map[string]string{
 	"steammessages_partnerapps.steamclient.proto":       "partnerapps.pb.go",
 	"steammessages_player.steamclient.proto":            "player.pb.go",
 	"steammessages_publishedfile.steamclient.proto":     "publishedfile.pb.go",
+	"offline_ticket.proto":                              "offline_ticket.pb.go",
+	"steammessages_parental_objects.proto":              "parental_objects.pb.go",
+	"enums_productinfo.proto":                           "productinfo.pb.go",
 }
 
 var tf2ProtoFiles = map[string]string{
@@ -159,6 +153,7 @@ var dotaProtoFiles = map[string]string{
 	"gcsdk_gcmessages.proto":  "gcsdk.pb.go",
 	"gcsystemmsgs.proto":      "system.pb.go",
 	"steammessages.proto":     "steam.pb.go",
+	"valveextensions.proto":   "valveextensions.pb.go",
 }
 
 var csgoProtoFiles = map[string]string{
@@ -173,6 +168,7 @@ var csgoProtoFiles = map[string]string{
 	"netmessages.proto":            "net.pb.go",
 	"network_connection.proto":     "networkconnection.pb.go",
 	"uifontfile_format.proto":      "uifontfile.pb.go",
+	"networkbasetypes.proto":       "networkbasetypes.pb.go",
 }
 
 func compileProto(srcBase, srcSubdir, proto, target string, opt []string) {
@@ -209,7 +205,7 @@ func compileProto(srcBase, srcSubdir, proto, target string, opt []string) {
 
 func forceRename(from, to string) error {
 	if from != to {
-		os.Remove(to)
+		_ = os.Remove(to)
 	}
 	return os.Rename(from, to)
 }
@@ -219,11 +215,11 @@ var unusedImportCommentRegex = regexp.MustCompile("// discarding unused import .
 var fileDescriptorVarRegex = regexp.MustCompile(`fileDescriptor\d+`)
 
 func fixProto(outDir, path string) {
-	// goprotobuf is really bad at dependencies, so we must fix them manually...
-	// It tries to load each dependency of a file as a seperate package (but in a very, very wrong way).
+	// goprotobuf is terrible at dependencies, so we must fix them manually...
+	// It tries to load each dependency of a file as a separate package (but in a very, very wrong way).
 	// Because we want some files in the same package, we'll remove those imports to local files.
 
-	file, err := ioutil.ReadFile(path)
+	file, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
@@ -258,7 +254,7 @@ func fixProto(outDir, path string) {
 	// fix the package name
 	file = pkgRegex.ReplaceAll(file, []byte("package "+inferPackageName(path)))
 
-	// fix the google dependency;
+	// fix the Google dependency;
 	// we just reuse the one from protoc-gen-go
 	file = bytes.Replace(file, []byte("google/protobuf/descriptor.proto"), []byte("google.golang.org/protobuf/types/descriptorpb"), -1)
 
@@ -268,7 +264,7 @@ func fixProto(outDir, path string) {
 		return []byte(filename + "_" + string(match))
 	})
 
-	err = ioutil.WriteFile(path, file, os.ModePerm)
+	err = os.WriteFile(path, file, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
@@ -279,11 +275,7 @@ func inferPackageName(path string) string {
 	return pieces[len(pieces)-2]
 }
 
-func print(text string) { os.Stdout.WriteString(text + "\n") }
-
-func printerr(text string) { os.Stderr.WriteString(text + "\n") }
-
-// This writer appends a "> " after every newline so that the outpout appears quoted.
+// This writer appends a "> " after every newline so that the output appears quoted.
 type quotedWriter struct {
 	w       io.Writer
 	started bool
@@ -335,7 +327,7 @@ func execute(command string, args []string) {
 
 	err := cmd.Run()
 	if err != nil {
-		printerr(err.Error())
+		_, _ = fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
 }
