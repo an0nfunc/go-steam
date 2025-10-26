@@ -76,6 +76,7 @@ const (
 	EMsg_UpdateScheduledTaskEnableState_TEST                      EMsg = 244
 	EMsg_UpdateScheduledTaskEnableStateResponse_TEST              EMsg = 245
 	EMsg_ContentDescriptionDeltaUpdate                            EMsg = 246
+	EMsg_GMShellAndServerAddressUpdates                           EMsg = 247
 	EMsg_BaseGM                                                   EMsg = 300
 	EMsg_Heartbeat                                                EMsg = 300
 	EMsg_ShellFailed                                              EMsg = 301
@@ -103,6 +104,9 @@ const (
 	EMsg_GMTestNextBuildSchemaConversionResponse                  EMsg = 335
 	EMsg_ExpectShellRestart                                       EMsg = 336
 	EMsg_HotFixProgress                                           EMsg = 337
+	EMsg_GMStatsForwardToAdminConnections                         EMsg = 338
+	EMsg_GMGetModifiedConVars                                     EMsg = 339
+	EMsg_GMGetModifiedConVarsResponse                             EMsg = 340
 	EMsg_BaseAIS                                                  EMsg = 400
 	EMsg_AISRequestContentDescription                             EMsg = 402
 	EMsg_AISUpdateAppInfo                                         EMsg = 403
@@ -168,7 +172,6 @@ const (
 	EMsg_AllowUserToPlayResponse                                  EMsg = 551
 	EMsg_AMVerfiyUser                                             EMsg = 552
 	EMsg_AMClientNotPlaying                                       EMsg = 553
-	EMsg_ClientRequestFriendship                                  EMsg = 554 // Deprecated: Renamed to AMClientRequestFriendship
 	EMsg_AMClientRequestFriendship                                EMsg = 554
 	EMsg_AMRelayPublishStatus                                     EMsg = 555
 	EMsg_AMInitPurchaseResponse                                   EMsg = 560
@@ -284,7 +287,6 @@ const (
 	EMsg_ClientGameConnectTokens                                  EMsg = 779
 	EMsg_ClientLicenseList                                        EMsg = 780
 	EMsg_ClientVACBanStatus                                       EMsg = 782
-	EMsg_ClientCMList                                             EMsg = 783
 	EMsg_ClientEncryptPct                                         EMsg = 784
 	EMsg_ClientGetLegacyGameKeyResponse                           EMsg = 785
 	EMsg_ClientAddFriend                                          EMsg = 791
@@ -547,6 +549,7 @@ const (
 	EMsg_CMSessionRejected                                        EMsg = 1703
 	EMsg_CMSetSecrets                                             EMsg = 1704
 	EMsg_CMGetSecrets                                             EMsg = 1705
+	EMsg_CMRemotePlayReplyPacket                                  EMsg = 1706
 	EMsg_BaseGC                                                   EMsg = 2200
 	EMsg_GCCmdRevive                                              EMsg = 2203
 	EMsg_GCCmdDown                                                EMsg = 2206
@@ -577,6 +580,15 @@ const (
 	EMsg_GCHAccountPhoneNumberChange                              EMsg = 2236
 	EMsg_GCHAccountTwoFactorChange                                EMsg = 2237
 	EMsg_GCHInviteUserToLobby                                     EMsg = 2238
+	EMsg_GCHUpdateMultipleSessions                                EMsg = 2239
+	EMsg_GCHMarkAppSessionsAuthoritative                          EMsg = 2240
+	EMsg_GCHRecurringSubscriptionStatusChange                     EMsg = 2241
+	EMsg_GCHAppCheersReceived                                     EMsg = 2242
+	EMsg_GCHAppCheersGetAllowedTypes                              EMsg = 2243
+	EMsg_GCHAppCheersGetAllowedTypesResponse                      EMsg = 2244
+	EMsg_GCHRoutingRulesFromGCHtoGM                               EMsg = 2245
+	EMsg_GCHRoutingRulesToGCHfromGM                               EMsg = 2246
+	EMsg_UpdateCMMessageRateRules                                 EMsg = 2247
 	EMsg_BaseP2P                                                  EMsg = 2500
 	EMsg_P2PIntroducerMessage                                     EMsg = 2502
 	EMsg_BaseSM                                                   EMsg = 2900
@@ -656,10 +668,8 @@ const (
 	EMsg_AMLeaveClan                                              EMsg = 4010
 	EMsg_AMClanPermissions                                        EMsg = 4011
 	EMsg_AMClanPermissionsResponse                                EMsg = 4012
-	EMsg_AMCreateClanEvent                                        EMsg = 4013 // Deprecated: renamed to AMCreateClanEventDummyForRateLimiting
 	EMsg_AMCreateClanEventDummyForRateLimiting                    EMsg = 4013
 	EMsg_AMCreateClanEventResponse                                EMsg = 4014 // Deprecated
-	EMsg_AMUpdateClanEvent                                        EMsg = 4015 // Deprecated: renamed to AMUpdateClanEventDummyForRateLimiting
 	EMsg_AMUpdateClanEventDummyForRateLimiting                    EMsg = 4015
 	EMsg_AMUpdateClanEventResponse                                EMsg = 4016 // Deprecated
 	EMsg_AMGetClanEvents                                          EMsg = 4017 // Deprecated
@@ -705,9 +715,7 @@ const (
 	EMsg_AMGetAccountLinksResponse                                EMsg = 4070
 	EMsg_AMSetAccountLinks                                        EMsg = 4071
 	EMsg_AMSetAccountLinksResponse                                EMsg = 4072
-	EMsg_AMGetUserGameStats                                       EMsg = 4073 // Deprecated: renamed to UGSGetUserGameStats
 	EMsg_UGSGetUserGameStats                                      EMsg = 4073
-	EMsg_AMGetUserGameStatsResponse                               EMsg = 4074 // Deprecated: renamed to UGSGetUserGameStatsResponse
 	EMsg_UGSGetUserGameStatsResponse                              EMsg = 4074
 	EMsg_AMCheckClanMembership                                    EMsg = 4075
 	EMsg_AMGetClanMembers                                         EMsg = 4076
@@ -750,7 +758,6 @@ const (
 	EMsg_AMGetCommunityPrivacyState                               EMsg = 4116
 	EMsg_AMGetCommunityPrivacyStateResponse                       EMsg = 4117
 	EMsg_AMCheckClanInviteRateLimiting                            EMsg = 4118
-	EMsg_AMGetUserAchievementStatus                               EMsg = 4119 // Deprecated: renamed to UGSGetUserAchievementStatus
 	EMsg_UGSGetUserAchievementStatus                              EMsg = 4119
 	EMsg_AMGetIgnored                                             EMsg = 4120
 	EMsg_AMGetIgnoredResponse                                     EMsg = 4121
@@ -805,12 +812,10 @@ const (
 	EMsg_AMGetPurchaseStatus                                      EMsg = 4206
 	EMsg_AMSupportIsAccountEnabled                                EMsg = 4209
 	EMsg_AMSupportIsAccountEnabledResponse                        EMsg = 4210
-	EMsg_AMGetUserStats                                           EMsg = 4211 // Deprecated: renamed to UGSGetUserStats
 	EMsg_UGSGetUserStats                                          EMsg = 4211
 	EMsg_AMSupportKickSession                                     EMsg = 4212
 	EMsg_AMGSSearch                                               EMsg = 4213
 	EMsg_MarketingMessageUpdate                                   EMsg = 4216
-	EMsg_AMRouteFriendMsg                                         EMsg = 4219 // Deprecated: renamed to ChatServerRouteFriendMsg
 	EMsg_ChatServerRouteFriendMsg                                 EMsg = 4219
 	EMsg_AMTicketAuthRequestOrResponse                            EMsg = 4220
 	EMsg_AMVerifyDepotManagementRights                            EMsg = 4222
@@ -818,7 +823,6 @@ const (
 	EMsg_AMAddFreeLicense                                         EMsg = 4224
 	EMsg_AMValidateEmailLink                                      EMsg = 4231
 	EMsg_AMValidateEmailLinkResponse                              EMsg = 4232
-	EMsg_AMStoreUserStats                                         EMsg = 4236 // Deprecated: renamed to UGSStoreUserStats
 	EMsg_UGSStoreUserStats                                        EMsg = 4236
 	EMsg_AMDeleteStoredCard                                       EMsg = 4241
 	EMsg_AMRevokeLegacyGameKeys                                   EMsg = 4242
@@ -840,7 +844,6 @@ const (
 	EMsg_AMCreateDispute                                          EMsg = 4262
 	EMsg_AMCreateDisputeResponse                                  EMsg = 4263 // Deprecated
 	EMsg_AMClearDispute                                           EMsg = 4264
-	EMsg_AMClearDisputeResponse                                   EMsg = 4265 // Deprecated: renamed to AMCreateFinancialAdjustment
 	EMsg_AMCreateFinancialAdjustment                              EMsg = 4265
 	EMsg_AMPlayerNicknameList                                     EMsg = 4266
 	EMsg_AMPlayerNicknameListResponse                             EMsg = 4267
@@ -853,7 +856,6 @@ const (
 	EMsg_AMGetGameMembersResponse                                 EMsg = 4277
 	EMsg_AMGetSteamIDForMicroTxn                                  EMsg = 4278
 	EMsg_AMGetSteamIDForMicroTxnResponse                          EMsg = 4279
-	EMsg_AMAddPublisherUser                                       EMsg = 4280 // Deprecated: renamed to AMSetPartnerMember
 	EMsg_AMSetPartnerMember                                       EMsg = 4280
 	EMsg_AMRemovePublisherUser                                    EMsg = 4281
 	EMsg_AMGetUserLicenseList                                     EMsg = 4282
@@ -878,7 +880,6 @@ const (
 	EMsg_AMIsAccountInCaptchaGracePeriodResponse                  EMsg = 4309
 	EMsg_AMAccountPS3Unlink                                       EMsg = 4310
 	EMsg_AMAccountPS3UnlinkResponse                               EMsg = 4311
-	EMsg_AMStoreUserStatsResponse                                 EMsg = 4312 // Deprecated: renamed to UGSStoreUserStatsResponse
 	EMsg_UGSStoreUserStatsResponse                                EMsg = 4312
 	EMsg_AMGetAccountPSNInfo                                      EMsg = 4313
 	EMsg_AMGetAccountPSNInfoResponse                              EMsg = 4314
@@ -984,6 +985,9 @@ const (
 	EMsg_AMRequestPersonaUpdateForChatServer                      EMsg = 4420
 	EMsg_AMPerfectWorldPayment                                    EMsg = 4421
 	EMsg_AMPerfectWorldPaymentResponse                            EMsg = 4422
+	EMsg_AMECommPayPayment                                        EMsg = 4423
+	EMsg_AMECommPayPaymentResponse                                EMsg = 4424
+	EMsg_AMSetRemoteClientID                                      EMsg = 4425
 	EMsg_BasePSRange                                              EMsg = 5000
 	EMsg_PSCreateShoppingCart                                     EMsg = 5001
 	EMsg_PSCreateShoppingCartResponse                             EMsg = 5002
@@ -997,6 +1001,8 @@ const (
 	EMsg_PSGetShoppingCartContentsResponse                        EMsg = 5010
 	EMsg_PSAddWalletCreditToShoppingCart                          EMsg = 5011
 	EMsg_PSAddWalletCreditToShoppingCartResponse                  EMsg = 5012
+	EMsg_PSGetAccountCartContents                                 EMsg = 5013
+	EMsg_PSGetAccountCartContentsResponse                         EMsg = 5014
 	EMsg_BaseUFSRange                                             EMsg = 5200
 	EMsg_ClientUFSUploadFileRequest                               EMsg = 5202
 	EMsg_ClientUFSUploadFileResponse                              EMsg = 5203
@@ -1040,9 +1046,7 @@ const (
 	EMsg_UFSDownloadFinishRequest                                 EMsg = 5248
 	EMsg_UFSDownloadFinishResponse                                EMsg = 5249
 	EMsg_UFSFlushURLCache                                         EMsg = 5250
-	EMsg_UFSUploadCommit                                          EMsg = 5251 // Deprecated: renamed to ClientUFSUploadCommit
 	EMsg_ClientUFSUploadCommit                                    EMsg = 5251
-	EMsg_UFSUploadCommitResponse                                  EMsg = 5252 // Deprecated: renamed to ClientUFSUploadCommitResponse
 	EMsg_ClientUFSUploadCommitResponse                            EMsg = 5252
 	EMsg_UFSMigrateFileAppID                                      EMsg = 5253
 	EMsg_UFSMigrateFileAppIDResponse                              EMsg = 5254
@@ -1119,6 +1123,8 @@ const (
 	EMsg_ClientOGSWriteRow                                        EMsg = 5494
 	EMsg_ClientDRMTest                                            EMsg = 5495
 	EMsg_ClientDRMTestResult                                      EMsg = 5496
+	EMsg_ClientStartPeerContentServer                             EMsg = 5497
+	EMsg_ClientStartPeerContentServerResponse                     EMsg = 5498
 	EMsg_ClientServerUnavailable                                  EMsg = 5500
 	EMsg_ClientServersAvailable                                   EMsg = 5501
 	EMsg_ClientRegisterAuthTicketWithCM                           EMsg = 5502
@@ -1180,9 +1186,7 @@ const (
 	EMsg_AMClientCreateFriendsGroupResponse                       EMsg = 5561
 	EMsg_AMClientDeleteFriendsGroup                               EMsg = 5562
 	EMsg_AMClientDeleteFriendsGroupResponse                       EMsg = 5563
-	EMsg_AMClientRenameFriendsGroup                               EMsg = 5564 // Deprecated: renamed to AMClientManageFriendsGroup
 	EMsg_AMClientManageFriendsGroup                               EMsg = 5564
-	EMsg_AMClientRenameFriendsGroupResponse                       EMsg = 5565 // Deprecated: renamed to AMClientManageFriendsGroupResponse
 	EMsg_AMClientManageFriendsGroupResponse                       EMsg = 5565
 	EMsg_AMClientAddFriendToGroup                                 EMsg = 5566
 	EMsg_AMClientAddFriendToGroupResponse                         EMsg = 5567
@@ -1210,9 +1214,7 @@ const (
 	EMsg_ClientCreateAccountProtoResponse                         EMsg = 5591 // Deprecated
 	EMsg_ClientGetNumberOfCurrentPlayersDP                        EMsg = 5592
 	EMsg_ClientGetNumberOfCurrentPlayersDPResponse                EMsg = 5593
-	EMsg_ClientServiceMethod                                      EMsg = 5594 // Deprecated: renamed to ClientServiceMethodLegacy
 	EMsg_ClientServiceMethodLegacy                                EMsg = 5594
-	EMsg_ClientServiceMethodResponse                              EMsg = 5595 // Deprecated: renamed to ClientServiceMethodLegacyResponse
 	EMsg_ClientServiceMethodLegacyResponse                        EMsg = 5595
 	EMsg_ClientFriendUserStatusPublished                          EMsg = 5596
 	EMsg_ClientCurrentUIMode                                      EMsg = 5597
@@ -1334,7 +1336,6 @@ const (
 	EMsg_ClientUDSP2PSessionEnded                                 EMsg = 7002
 	EMsg_UDSRenderUserAuth                                        EMsg = 7003
 	EMsg_UDSRenderUserAuthResponse                                EMsg = 7004
-	EMsg_ClientUDSInviteToGame                                    EMsg = 7005 // Deprecated: renamed to ClientInviteToGame
 	EMsg_ClientInviteToGame                                       EMsg = 7005
 	EMsg_UDSHasSession                                            EMsg = 7006
 	EMsg_UDSHasSessionResponse                                    EMsg = 7007
@@ -1397,7 +1398,6 @@ const (
 	EMsg_ClientUCMEnumerateUserSubscribedFilesWithUpdates         EMsg = 7378
 	EMsg_ClientUCMEnumerateUserSubscribedFilesWithUpdatesResponse EMsg = 7379
 	EMsg_UCMPublishedFileContentUpdated                           EMsg = 7380
-	EMsg_UCMPublishedFileUpdated                                  EMsg = 7381 // Deprecated: renamed to ClientUCMPublishedFileUpdated
 	EMsg_ClientUCMPublishedFileUpdated                            EMsg = 7381
 	EMsg_ClientWorkshopItemChangesRequest                         EMsg = 7382
 	EMsg_ClientWorkshopItemChangesResponse                        EMsg = 7383
@@ -1426,11 +1426,6 @@ const (
 	EMsg_ClientFSEnumerateFollowingListResponse                   EMsg = 7520
 	EMsg_FSGetPendingNotificationCount                            EMsg = 7521
 	EMsg_FSGetPendingNotificationCountResponse                    EMsg = 7522
-	EMsg_ClientFSOfflineMessageNotification                       EMsg = 7523 // Deprecated: Renamed to ClientChatOfflineMessageNotification
-	EMsg_ClientFSRequestOfflineMessageCount                       EMsg = 7524 // Deprecated: Renamed to ClientChatRequestOfflineMessageCount
-	EMsg_ClientFSGetFriendMessageHistory                          EMsg = 7525 // Deprecated: Renamed to ClientChatGetFriendMessageHistory
-	EMsg_ClientFSGetFriendMessageHistoryResponse                  EMsg = 7526 // Deprecated: Renamed to ClientChatGetFriendMessageHistoryResponse
-	EMsg_ClientFSGetFriendMessageHistoryForOfflineMessages        EMsg = 7527 // Deprecated: Renamed to ClientChatGetFriendMessageHistoryForOfflineMessages
 	EMsg_ClientChatOfflineMessageNotification                     EMsg = 7523
 	EMsg_ClientChatRequestOfflineMessageCount                     EMsg = 7524
 	EMsg_ClientChatGetFriendMessageHistory                        EMsg = 7525
@@ -1438,7 +1433,6 @@ const (
 	EMsg_ClientChatGetFriendMessageHistoryForOfflineMessages      EMsg = 7527
 	EMsg_ClientFSGetFriendsSteamLevels                            EMsg = 7528
 	EMsg_ClientFSGetFriendsSteamLevelsResponse                    EMsg = 7529
-	EMsg_FSRequestFriendData                                      EMsg = 7530 // Deprecated: renamed to AMRequestFriendData
 	EMsg_AMRequestFriendData                                      EMsg = 7530
 	EMsg_DRMRange2                                                EMsg = 7600
 	EMsg_CEGVersionSetEnableDisableRequest                        EMsg = 7600
@@ -1522,6 +1516,8 @@ const (
 	EMsg_ClientPICSProductInfoResponse                            EMsg = 8904
 	EMsg_ClientPICSAccessTokenRequest                             EMsg = 8905
 	EMsg_ClientPICSAccessTokenResponse                            EMsg = 8906
+	EMsg_ClientPICSPrivateBetaRequest                             EMsg = 8907
+	EMsg_ClientPICSPrivateBetaResponse                            EMsg = 8908
 	EMsg_WorkerProcess                                            EMsg = 9000
 	EMsg_WorkerProcessPingRequest                                 EMsg = 9000
 	EMsg_WorkerProcessPingResponse                                EMsg = 9001
@@ -1559,6 +1555,8 @@ const (
 	EMsg_DRMWorkerProcessUnpackBlobResponse                       EMsg = 9131
 	EMsg_DRMWorkerProcessInstallAllRequest                        EMsg = 9132
 	EMsg_DRMWorkerProcessInstallAllResponse                       EMsg = 9133
+	EMsg_DRMWorkerProcessSignFile                                 EMsg = 9134
+	EMsg_DRMWorkerProcessSignFileResponse                         EMsg = 9135
 	EMsg_TestWorkerProcess                                        EMsg = 9200
 	EMsg_TestWorkerProcessLoadUnloadModuleRequest                 EMsg = 9200
 	EMsg_TestWorkerProcessLoadUnloadModuleResponse                EMsg = 9201
@@ -1587,13 +1585,18 @@ const (
 	EMsg_ClientUnlockStreamingResponse                            EMsg = 9508
 	EMsg_RemoteClientAcceptEULA                                   EMsg = 9509
 	EMsg_RemoteClientGetControllerConfig                          EMsg = 9510
-	EMsg_RemoteClientGetControllerConfigResposne                  EMsg = 9511 // Deprecated: renamed to RemoteClientGetControllerConfigResponse
 	EMsg_RemoteClientGetControllerConfigResponse                  EMsg = 9511
 	EMsg_RemoteClientStreamingEnabled                             EMsg = 9512
 	EMsg_ClientUnlockHEVC                                         EMsg = 9513
 	EMsg_ClientUnlockHEVCResponse                                 EMsg = 9514
 	EMsg_RemoteClientStatusRequest                                EMsg = 9515
 	EMsg_RemoteClientStatusResponse                               EMsg = 9516
+	EMsg_RemoteClientAuthorizationRequest                         EMsg = 9517
+	EMsg_RemoteClientAuthorizationResponse                        EMsg = 9518
+	EMsg_RemoteClientAuthorizationCancelRequest                   EMsg = 9519
+	EMsg_RemoteClientAuthorizationConfirmed                       EMsg = 9520
+	EMsg_RemoteClientProofRequest                                 EMsg = 9521
+	EMsg_RemoteClientProofResponse                                EMsg = 9522
 	EMsg_ClientConcurrentSessionsBase                             EMsg = 9600
 	EMsg_ClientPlayingSessionState                                EMsg = 9600
 	EMsg_ClientKickPlayingSession                                 EMsg = 9601
@@ -1608,9 +1611,16 @@ const (
 	EMsg_ClientVoiceCallPreAuthorizeResponse                      EMsg = 9801
 	EMsg_ClientServerTimestampRequest                             EMsg = 9802
 	EMsg_ClientServerTimestampResponse                            EMsg = 9803
+	EMsg_ServiceMethodCallFromClientNonAuthed                     EMsg = 9804
+	EMsg_ClientHello                                              EMsg = 9805
+	EMsg_ClientEnableOrDisableDownloads                           EMsg = 9806
+	EMsg_ClientEnableOrDisableDownloadsResponse                   EMsg = 9807
+	EMsg_ClientFeatureGroupInfo                                   EMsg = 9808
 	EMsg_ClientLANP2PBase                                         EMsg = 9900
 	EMsg_ClientLANP2PRequestChunk                                 EMsg = 9900
 	EMsg_ClientLANP2PRequestChunkResponse                         EMsg = 9901
+	EMsg_ClientPeerChunkRequest                                   EMsg = 9902
+	EMsg_ClientPeerChunkResponse                                  EMsg = 9903
 	EMsg_ClientLANP2PMax                                          EMsg = 9999
 	EMsg_BaseWatchdogServer                                       EMsg = 10000
 	EMsg_NotifyWatchdog                                           EMsg = 10000
@@ -1627,6 +1637,14 @@ const (
 	EMsg_ChatServerGetPendingNotificationCountResponse            EMsg = 12001
 	EMsg_BaseSecretServer                                         EMsg = 12100
 	EMsg_ServerSecretChanged                                      EMsg = 12100
+	EMsg_BaseWG                                                   EMsg = 12200
+	EMsg_WGConnectionProtocolError                                EMsg = 12200
+	EMsg_WGConnectionValidateUserToken                            EMsg = 12201
+	EMsg_WGConnectionValidateUserTokenResponse                    EMsg = 12202
+	EMsg_WGConnectionLegacyWGRequest                              EMsg = 12203
+	EMsg_WGConnectionLegacyWGResponse                             EMsg = 12204
+	EMsg_ClientPendingGameLaunch                                  EMsg = 12300
+	EMsg_ClientPendingGameLaunchResponse                          EMsg = 12301
 )
 
 var EMsg_name = map[EMsg]string{
@@ -1651,7 +1669,7 @@ var EMsg_name = map[EMsg]string{
 	134:   "EMsg_WebAPIJobResponse",
 	135:   "EMsg_ClientSessionStart",
 	136:   "EMsg_ClientSessionEnd",
-	137:   "EMsg_ClientSessionUpdateAuthTicket",
+	137:   "EMsg_ClientSessionUpdate",
 	138:   "EMsg_StatsDeprecated",
 	139:   "EMsg_Ping",
 	140:   "EMsg_PingResponse",
@@ -1695,6 +1713,7 @@ var EMsg_name = map[EMsg]string{
 	244:   "EMsg_UpdateScheduledTaskEnableState_TEST",
 	245:   "EMsg_UpdateScheduledTaskEnableStateResponse_TEST",
 	246:   "EMsg_ContentDescriptionDeltaUpdate",
+	247:   "EMsg_GMShellAndServerAddressUpdates",
 	300:   "EMsg_BaseGM",
 	301:   "EMsg_ShellFailed",
 	307:   "EMsg_ExitShells",
@@ -1723,11 +1742,14 @@ var EMsg_name = map[EMsg]string{
 	335:   "EMsg_GMTestNextBuildSchemaConversionResponse",
 	336:   "EMsg_ExpectShellRestart",
 	337:   "EMsg_HotFixProgress",
+	338:   "EMsg_GMStatsForwardToAdminConnections",
+	339:   "EMsg_GMGetModifiedConVars",
+	340:   "EMsg_GMGetModifiedConVarsResponse",
 	400:   "EMsg_BaseAIS",
 	401:   "EMsg_AISRefreshContentDescription",
 	402:   "EMsg_AISRequestContentDescription",
 	403:   "EMsg_AISUpdateAppInfo",
-	404:   "EMsg_AISUpdatePackageInfo",
+	404:   "EMsg_AISUpdatePackageCosts",
 	405:   "EMsg_AISGetPackageChangeNumber",
 	406:   "EMsg_AISGetPackageChangeNumberResponse",
 	407:   "EMsg_AISAppInfoTableChanged",
@@ -1797,7 +1819,7 @@ var EMsg_name = map[EMsg]string{
 	551:   "EMsg_AllowUserToPlayResponse",
 	552:   "EMsg_AMVerfiyUser",
 	553:   "EMsg_AMClientNotPlaying",
-	554:   "EMsg_ClientRequestFriendship",
+	554:   "EMsg_AMClientRequestFriendship",
 	555:   "EMsg_AMRelayPublishStatus",
 	556:   "EMsg_AMResetCommunityContent",
 	557:   "EMsg_AMPrimePersonaStateCache",
@@ -2245,6 +2267,7 @@ var EMsg_name = map[EMsg]string{
 	1703:  "EMsg_CMSessionRejected",
 	1704:  "EMsg_CMSetSecrets",
 	1705:  "EMsg_CMGetSecrets",
+	1706:  "EMsg_CMRemotePlayReplyPacket",
 	1800:  "EMsg_BaseDSS",
 	1801:  "EMsg_DSSNewFile",
 	1802:  "EMsg_DSSCurrentFileList",
@@ -2278,8 +2301,8 @@ var EMsg_name = map[EMsg]string{
 	2219:  "EMsg_GCInterAppMessage",
 	2220:  "EMsg_GCGetEmailTemplate",
 	2221:  "EMsg_GCGetEmailTemplateResponse",
-	2222:  "EMsg_ISRelayToGCH",
-	2223:  "EMsg_GCHRelayClientToIS",
+	2222:  "EMsg_GCHRelay",
+	2223:  "EMsg_GCHRelayToClient",
 	2224:  "EMsg_GCHUpdateSession",
 	2225:  "EMsg_GCHRequestUpdateSession",
 	2226:  "EMsg_GCHRequestStatus",
@@ -2295,6 +2318,15 @@ var EMsg_name = map[EMsg]string{
 	2236:  "EMsg_GCHAccountPhoneNumberChange",
 	2237:  "EMsg_GCHAccountTwoFactorChange",
 	2238:  "EMsg_GCHInviteUserToLobby",
+	2239:  "EMsg_GCHUpdateMultipleSessions",
+	2240:  "EMsg_GCHMarkAppSessionsAuthoritative",
+	2241:  "EMsg_GCHRecurringSubscriptionStatusChange",
+	2242:  "EMsg_GCHAppCheersReceived",
+	2243:  "EMsg_GCHAppCheersGetAllowedTypes",
+	2244:  "EMsg_GCHAppCheersGetAllowedTypesResponse",
+	2245:  "EMsg_GCHRoutingRulesFromGCHtoGM",
+	2246:  "EMsg_GCHRoutingRulesToGCHfromGM",
+	2247:  "EMsg_UpdateCMMessageRateRules",
 	2500:  "EMsg_BaseP2P",
 	2502:  "EMsg_P2PIntroducerMessage",
 	2900:  "EMsg_BaseSM",
@@ -2400,14 +2432,14 @@ var EMsg_name = map[EMsg]string{
 	4005:  "EMsg_AMSetProfileURL",
 	4006:  "EMsg_AMGetAccountEmailAddress",
 	4007:  "EMsg_AMGetAccountEmailAddressResponse",
-	4008:  "EMsg_AMRequestFriendData",
+	4008:  "EMsg_AMRequestClanData",
 	4009:  "EMsg_AMRouteToClients",
 	4010:  "EMsg_AMLeaveClan",
 	4011:  "EMsg_AMClanPermissions",
 	4012:  "EMsg_AMClanPermissionsResponse",
-	4013:  "EMsg_AMCreateClanEvent",
+	4013:  "EMsg_AMCreateClanEventDummyForRateLimiting",
 	4014:  "EMsg_AMCreateClanEventResponse",
-	4015:  "EMsg_AMUpdateClanEvent",
+	4015:  "EMsg_AMUpdateClanEventDummyForRateLimiting",
 	4016:  "EMsg_AMUpdateClanEventResponse",
 	4017:  "EMsg_AMGetClanEvents",
 	4018:  "EMsg_AMGetClanEventsResponse",
@@ -2465,8 +2497,8 @@ var EMsg_name = map[EMsg]string{
 	4070:  "EMsg_AMGetAccountLinksResponse",
 	4071:  "EMsg_AMSetAccountLinks",
 	4072:  "EMsg_AMSetAccountLinksResponse",
-	4073:  "EMsg_AMGetUserGameStats",
-	4074:  "EMsg_AMGetUserGameStatsResponse",
+	4073:  "EMsg_UGSGetUserGameStats",
+	4074:  "EMsg_UGSGetUserGameStatsResponse",
 	4075:  "EMsg_AMCheckClanMembership",
 	4076:  "EMsg_AMGetClanMembers",
 	4077:  "EMsg_AMGetClanMembersResponse",
@@ -2511,7 +2543,7 @@ var EMsg_name = map[EMsg]string{
 	4116:  "EMsg_AMGetCommunityPrivacyState",
 	4117:  "EMsg_AMGetCommunityPrivacyStateResponse",
 	4118:  "EMsg_AMCheckClanInviteRateLimiting",
-	4119:  "EMsg_AMGetUserAchievementStatus",
+	4119:  "EMsg_UGSGetUserAchievementStatus",
 	4120:  "EMsg_AMGetIgnored",
 	4121:  "EMsg_AMGetIgnoredResponse",
 	4122:  "EMsg_AMSetIgnoredResponse",
@@ -2594,11 +2626,11 @@ var EMsg_name = map[EMsg]string{
 	4206:  "EMsg_AMGetPurchaseStatus",
 	4209:  "EMsg_AMSupportIsAccountEnabled",
 	4210:  "EMsg_AMSupportIsAccountEnabledResponse",
-	4211:  "EMsg_AMGetUserStats",
+	4211:  "EMsg_UGSGetUserStats",
 	4212:  "EMsg_AMSupportKickSession",
 	4213:  "EMsg_AMGSSearch",
 	4216:  "EMsg_MarketingMessageUpdate",
-	4219:  "EMsg_AMRouteFriendMsg",
+	4219:  "EMsg_ChatServerRouteFriendMsg",
 	4220:  "EMsg_AMTicketAuthRequestOrResponse",
 	4222:  "EMsg_AMVerifyDepotManagementRights",
 	4223:  "EMsg_AMVerifyDepotManagementRightsResponse",
@@ -2610,7 +2642,7 @@ var EMsg_name = map[EMsg]string{
 	4231:  "EMsg_AMValidateEmailLink",
 	4232:  "EMsg_AMValidateEmailLinkResponse",
 	4234:  "EMsg_AMAddUsersToMarketingTreatment",
-	4236:  "EMsg_AMStoreUserStats",
+	4236:  "EMsg_UGSStoreUserStats",
 	4237:  "EMsg_AMGetUserGameplayInfo",
 	4238:  "EMsg_AMGetUserGameplayInfoResponse",
 	4239:  "EMsg_AMGetCardList",
@@ -2638,7 +2670,7 @@ var EMsg_name = map[EMsg]string{
 	4262:  "EMsg_AMCreateDispute",
 	4263:  "EMsg_AMCreateDisputeResponse",
 	4264:  "EMsg_AMClearDispute",
-	4265:  "EMsg_AMClearDisputeResponse",
+	4265:  "EMsg_AMCreateFinancialAdjustment",
 	4266:  "EMsg_AMPlayerNicknameList",
 	4267:  "EMsg_AMPlayerNicknameListResponse",
 	4268:  "EMsg_AMSetDRMTestConfig",
@@ -2651,7 +2683,7 @@ var EMsg_name = map[EMsg]string{
 	4277:  "EMsg_AMGetGameMembersResponse",
 	4278:  "EMsg_AMGetSteamIDForMicroTxn",
 	4279:  "EMsg_AMGetSteamIDForMicroTxnResponse",
-	4280:  "EMsg_AMAddPublisherUser",
+	4280:  "EMsg_AMSetPartnerMember",
 	4281:  "EMsg_AMRemovePublisherUser",
 	4282:  "EMsg_AMGetUserLicenseList",
 	4283:  "EMsg_AMGetUserLicenseListResponse",
@@ -2681,7 +2713,7 @@ var EMsg_name = map[EMsg]string{
 	4309:  "EMsg_AMIsAccountInCaptchaGracePeriodResponse",
 	4310:  "EMsg_AMAccountPS3Unlink",
 	4311:  "EMsg_AMAccountPS3UnlinkResponse",
-	4312:  "EMsg_AMStoreUserStatsResponse",
+	4312:  "EMsg_UGSStoreUserStatsResponse",
 	4313:  "EMsg_AMGetAccountPSNInfo",
 	4314:  "EMsg_AMGetAccountPSNInfoResponse",
 	4315:  "EMsg_AMAuthenticatedPlayerList",
@@ -2787,6 +2819,9 @@ var EMsg_name = map[EMsg]string{
 	4420:  "EMsg_AMRequestPersonaUpdateForChatServer",
 	4421:  "EMsg_AMPerfectWorldPayment",
 	4422:  "EMsg_AMPerfectWorldPaymentResponse",
+	4423:  "EMsg_AMECommPayPayment",
+	4424:  "EMsg_AMECommPayPaymentResponse",
+	4425:  "EMsg_AMSetRemoteClientID",
 	5000:  "EMsg_BasePSRange",
 	5001:  "EMsg_PSCreateShoppingCart",
 	5002:  "EMsg_PSCreateShoppingCartResponse",
@@ -2800,6 +2835,8 @@ var EMsg_name = map[EMsg]string{
 	5010:  "EMsg_PSGetShoppingCartContentsResponse",
 	5011:  "EMsg_PSAddWalletCreditToShoppingCart",
 	5012:  "EMsg_PSAddWalletCreditToShoppingCartResponse",
+	5013:  "EMsg_PSGetAccountCartContents",
+	5014:  "EMsg_PSGetAccountCartContentsResponse",
 	5200:  "EMsg_BaseUFSRange",
 	5202:  "EMsg_ClientUFSUploadFileRequest",
 	5203:  "EMsg_ClientUFSUploadFileResponse",
@@ -2846,8 +2883,8 @@ var EMsg_name = map[EMsg]string{
 	5248:  "EMsg_UFSDownloadFinishRequest",
 	5249:  "EMsg_UFSDownloadFinishResponse",
 	5250:  "EMsg_UFSFlushURLCache",
-	5251:  "EMsg_UFSUploadCommit",
-	5252:  "EMsg_UFSUploadCommitResponse",
+	5251:  "EMsg_ClientUFSUploadCommit",
+	5252:  "EMsg_ClientUFSUploadCommitResponse",
 	5253:  "EMsg_UFSMigrateFileAppID",
 	5254:  "EMsg_UFSMigrateFileAppIDResponse",
 	5400:  "EMsg_BaseClient2",
@@ -2932,6 +2969,8 @@ var EMsg_name = map[EMsg]string{
 	5494:  "EMsg_ClientOGSWriteRow",
 	5495:  "EMsg_ClientDRMTest",
 	5496:  "EMsg_ClientDRMTestResult",
+	5497:  "EMsg_ClientStartPeerContentServer",
+	5498:  "EMsg_ClientStartPeerContentServerResponse",
 	5500:  "EMsg_ClientServerUnavailable",
 	5501:  "EMsg_ClientServersAvailable",
 	5502:  "EMsg_ClientRegisterAuthTicketWithCM",
@@ -2995,8 +3034,8 @@ var EMsg_name = map[EMsg]string{
 	5561:  "EMsg_AMClientCreateFriendsGroupResponse",
 	5562:  "EMsg_AMClientDeleteFriendsGroup",
 	5563:  "EMsg_AMClientDeleteFriendsGroupResponse",
-	5564:  "EMsg_AMClientRenameFriendsGroup",
-	5565:  "EMsg_AMClientRenameFriendsGroupResponse",
+	5564:  "EMsg_AMClientManageFriendsGroup",
+	5565:  "EMsg_AMClientManageFriendsGroupResponse",
 	5566:  "EMsg_AMClientAddFriendToGroup",
 	5567:  "EMsg_AMClientAddFriendToGroupResponse",
 	5568:  "EMsg_AMClientRemoveFriendFromGroup",
@@ -3025,8 +3064,8 @@ var EMsg_name = map[EMsg]string{
 	5591:  "EMsg_ClientRequestOAuthTokenForAppResponse",
 	5592:  "EMsg_ClientGetNumberOfCurrentPlayersDP",
 	5593:  "EMsg_ClientGetNumberOfCurrentPlayersDPResponse",
-	5594:  "EMsg_ClientServiceMethod",
-	5595:  "EMsg_ClientServiceMethodResponse",
+	5594:  "EMsg_ClientServiceMethodLegacy",
+	5595:  "EMsg_ClientServiceMethodLegacyResponse",
 	5596:  "EMsg_ClientFriendUserStatusPublished",
 	5597:  "EMsg_ClientCurrentUIMode",
 	5598:  "EMsg_ClientVanityURLChangedNotification",
@@ -3177,9 +3216,9 @@ var EMsg_name = map[EMsg]string{
 	7002:  "EMsg_ClientUDSP2PSessionEnded",
 	7003:  "EMsg_UDSRenderUserAuth",
 	7004:  "EMsg_UDSRenderUserAuthResponse",
-	7005:  "EMsg_ClientUDSInviteToGame",
-	7006:  "EMsg_UDSFindSession",
-	7007:  "EMsg_UDSFindSessionResponse",
+	7005:  "EMsg_ClientInviteToGame",
+	7006:  "EMsg_UDSHasSession",
+	7007:  "EMsg_UDSHasSessionResponse",
 	7100:  "EMsg_MPASBase",
 	7101:  "EMsg_MPASVacBanReset",
 	7200:  "EMsg_KGSBase",
@@ -3270,7 +3309,7 @@ var EMsg_name = map[EMsg]string{
 	7378:  "EMsg_ClientUCMEnumerateUserSubscribedFilesWithUpdates",
 	7379:  "EMsg_ClientUCMEnumerateUserSubscribedFilesWithUpdatesResponse",
 	7380:  "EMsg_UCMPublishedFileContentUpdated",
-	7381:  "EMsg_UCMPublishedFileUpdated",
+	7381:  "EMsg_ClientUCMPublishedFileUpdated",
 	7382:  "EMsg_ClientWorkshopItemChangesRequest",
 	7383:  "EMsg_ClientWorkshopItemChangesResponse",
 	7384:  "EMsg_ClientWorkshopItemInfoRequest",
@@ -3298,14 +3337,14 @@ var EMsg_name = map[EMsg]string{
 	7520:  "EMsg_ClientFSEnumerateFollowingListResponse",
 	7521:  "EMsg_FSGetPendingNotificationCount",
 	7522:  "EMsg_FSGetPendingNotificationCountResponse",
-	7523:  "EMsg_ClientFSOfflineMessageNotification",
-	7524:  "EMsg_ClientFSRequestOfflineMessageCount",
-	7525:  "EMsg_ClientFSGetFriendMessageHistory",
-	7526:  "EMsg_ClientFSGetFriendMessageHistoryResponse",
-	7527:  "EMsg_ClientFSGetFriendMessageHistoryForOfflineMessages",
+	7523:  "EMsg_ClientChatOfflineMessageNotification",
+	7524:  "EMsg_ClientChatRequestOfflineMessageCount",
+	7525:  "EMsg_ClientChatGetFriendMessageHistory",
+	7526:  "EMsg_ClientChatGetFriendMessageHistoryResponse",
+	7527:  "EMsg_ClientChatGetFriendMessageHistoryForOfflineMessages",
 	7528:  "EMsg_ClientFSGetFriendsSteamLevels",
 	7529:  "EMsg_ClientFSGetFriendsSteamLevelsResponse",
-	7530:  "EMsg_FSRequestFriendData",
+	7530:  "EMsg_AMRequestFriendData",
 	7600:  "EMsg_DRMRange2",
 	7601:  "EMsg_CEGVersionSetEnableDisableResponse",
 	7602:  "EMsg_CEGPropStatusDRMSRequest",
@@ -3391,6 +3430,8 @@ var EMsg_name = map[EMsg]string{
 	8904:  "EMsg_ClientPICSProductInfoResponse",
 	8905:  "EMsg_ClientPICSAccessTokenRequest",
 	8906:  "EMsg_ClientPICSAccessTokenResponse",
+	8907:  "EMsg_ClientPICSPrivateBetaRequest",
+	8908:  "EMsg_ClientPICSPrivateBetaResponse",
 	9000:  "EMsg_WorkerProcess",
 	9001:  "EMsg_WorkerProcessPingResponse",
 	9002:  "EMsg_WorkerProcessShutdown",
@@ -3428,6 +3469,8 @@ var EMsg_name = map[EMsg]string{
 	9131:  "EMsg_DRMWorkerProcessUnpackBlobResponse",
 	9132:  "EMsg_DRMWorkerProcessInstallAllRequest",
 	9133:  "EMsg_DRMWorkerProcessInstallAllResponse",
+	9134:  "EMsg_DRMWorkerProcessSignFile",
+	9135:  "EMsg_DRMWorkerProcessSignFileResponse",
 	9200:  "EMsg_TestWorkerProcess",
 	9201:  "EMsg_TestWorkerProcessLoadUnloadModuleResponse",
 	9202:  "EMsg_TestWorkerProcessServiceModuleCallRequest",
@@ -3435,7 +3478,7 @@ var EMsg_name = map[EMsg]string{
 	9300:  "EMsg_QuestServerBase",
 	9330:  "EMsg_ClientGetEmoticonList",
 	9331:  "EMsg_ClientEmoticonList",
-	9400:  "EMsg_ClientSharedLibraryBase",
+	9400:  "EMsg_SLCBase",
 	9401:  "EMsg_SLCRequestUserSessionStatus",
 	9402:  "EMsg_SLCSharedLicensesLockStatus",
 	9403:  "EMsg_ClientSharedLicensesLockStatus",
@@ -3455,12 +3498,18 @@ var EMsg_name = map[EMsg]string{
 	9508:  "EMsg_ClientUnlockStreamingResponse",
 	9509:  "EMsg_RemoteClientAcceptEULA",
 	9510:  "EMsg_RemoteClientGetControllerConfig",
-	9511:  "EMsg_RemoteClientGetControllerConfigResposne",
+	9511:  "EMsg_RemoteClientGetControllerConfigResponse",
 	9512:  "EMsg_RemoteClientStreamingEnabled",
 	9513:  "EMsg_ClientUnlockHEVC",
 	9514:  "EMsg_ClientUnlockHEVCResponse",
 	9515:  "EMsg_RemoteClientStatusRequest",
 	9516:  "EMsg_RemoteClientStatusResponse",
+	9517:  "EMsg_RemoteClientAuthorizationRequest",
+	9518:  "EMsg_RemoteClientAuthorizationResponse",
+	9519:  "EMsg_RemoteClientAuthorizationCancelRequest",
+	9520:  "EMsg_RemoteClientAuthorizationConfirmed",
+	9521:  "EMsg_RemoteClientProofRequest",
+	9522:  "EMsg_RemoteClientProofResponse",
 	9600:  "EMsg_ClientConcurrentSessionsBase",
 	9601:  "EMsg_ClientKickPlayingSession",
 	9700:  "EMsg_ClientBroadcastBase",
@@ -3472,8 +3521,15 @@ var EMsg_name = map[EMsg]string{
 	9801:  "EMsg_ClientVoiceCallPreAuthorizeResponse",
 	9802:  "EMsg_ClientServerTimestampRequest",
 	9803:  "EMsg_ClientServerTimestampResponse",
+	9804:  "EMsg_ServiceMethodCallFromClientNonAuthed",
+	9805:  "EMsg_ClientHello",
+	9806:  "EMsg_ClientEnableOrDisableDownloads",
+	9807:  "EMsg_ClientEnableOrDisableDownloadsResponse",
+	9808:  "EMsg_ClientFeatureGroupInfo",
 	9900:  "EMsg_ClientLANP2PBase",
 	9901:  "EMsg_ClientLANP2PRequestChunkResponse",
+	9902:  "EMsg_ClientPeerChunkRequest",
+	9903:  "EMsg_ClientPeerChunkResponse",
 	9999:  "EMsg_ClientLANP2PMax",
 	10000: "EMsg_BaseWatchdogServer",
 	10100: "EMsg_ClientSiteLicenseBase",
@@ -3486,6 +3542,13 @@ var EMsg_name = map[EMsg]string{
 	12000: "EMsg_BaseChatServer",
 	12001: "EMsg_ChatServerGetPendingNotificationCountResponse",
 	12100: "EMsg_BaseSecretServer",
+	12200: "EMsg_BaseWG",
+	12201: "EMsg_WGConnectionValidateUserToken",
+	12202: "EMsg_WGConnectionValidateUserTokenResponse",
+	12203: "EMsg_WGConnectionLegacyWGRequest",
+	12204: "EMsg_WGConnectionLegacyWGResponse",
+	12300: "EMsg_ClientPendingGameLaunch",
+	12301: "EMsg_ClientPendingGameLaunchResponse",
 }
 
 func (e EMsg) String() string {
@@ -3631,6 +3694,12 @@ const (
 	EResult_InvalidSignature                        EResult = 121
 	EResult_ParseFailure                            EResult = 122
 	EResult_NoVerifiedPhone                         EResult = 123
+	EResult_InsufficientBattery                     EResult = 124
+	EResult_ChargerRequired                         EResult = 125
+	EResult_CachedCredentialInvalid                 EResult = 126
+	EResult_PhoneNumberIsVOIP                       EResult = 127
+	EResult_NotSupported                            EResult = 128
+	EResult_FamilySizeLimitExceeded                 EResult = 129
 )
 
 var EResult_name = map[EResult]string{
@@ -3689,7 +3758,7 @@ var EResult_name = map[EResult]string{
 	53:  "EResult_DataCorruption",
 	54:  "EResult_DiskFull",
 	55:  "EResult_RemoteCallFailed",
-	56:  "EResult_PasswordNotSet",
+	56:  "EResult_PasswordUnset",
 	57:  "EResult_ExternalAccountUnlinked",
 	58:  "EResult_PSNTicketInvalid",
 	59:  "EResult_ExternalAccountAlreadyLinked",
@@ -3699,14 +3768,14 @@ var EResult_name = map[EResult]string{
 	63:  "EResult_AccountLogonDenied",
 	64:  "EResult_CannotUseOldPassword",
 	65:  "EResult_InvalidLoginAuthCode",
-	66:  "EResult_AccountLogonDeniedNoMailSent",
+	66:  "EResult_AccountLogonDeniedNoMail",
 	67:  "EResult_HardwareNotCapableOfIPT",
 	68:  "EResult_IPTInitError",
 	69:  "EResult_ParentalControlRestricted",
 	70:  "EResult_FacebookQueryError",
 	71:  "EResult_ExpiredLoginAuthCode",
 	72:  "EResult_IPLoginRestrictionFailed",
-	73:  "EResult_AccountLocked",
+	73:  "EResult_AccountLockedDown",
 	74:  "EResult_AccountLogonDeniedVerifiedEmailRequired",
 	75:  "EResult_NoMatchingURL",
 	76:  "EResult_BadResponse",
@@ -3718,17 +3787,17 @@ var EResult_name = map[EResult]string{
 	82:  "EResult_RestrictedDevice",
 	83:  "EResult_RegionLocked",
 	84:  "EResult_RateLimitExceeded",
-	85:  "EResult_AccountLogonDeniedNeedTwoFactorCode",
-	86:  "EResult_ItemOrEntryHasBeenDeleted",
+	85:  "EResult_AccountLoginDeniedNeedTwoFactor",
+	86:  "EResult_ItemDeleted",
 	87:  "EResult_AccountLoginDeniedThrottle",
 	88:  "EResult_TwoFactorCodeMismatch",
 	89:  "EResult_TwoFactorActivationCodeMismatch",
-	90:  "EResult_AccountAssociatedToMultiplePlayers",
+	90:  "EResult_AccountAssociatedToMultiplePartners",
 	91:  "EResult_NotModified",
-	92:  "EResult_NoMobileDeviceAvailable",
-	93:  "EResult_TimeIsOutOfSync",
+	92:  "EResult_NoMobileDevice",
+	93:  "EResult_TimeNotSynced",
 	94:  "EResult_SMSCodeFailed",
-	95:  "EResult_TooManyAccountsAccessThisResource",
+	95:  "EResult_AccountLimitExceeded",
 	96:  "EResult_AccountActivityLimitExceeded",
 	97:  "EResult_PhoneActivityLimitExceeded",
 	98:  "EResult_RefundToWallet",
@@ -3747,16 +3816,22 @@ var EResult_name = map[EResult]string{
 	111: "EResult_AccountNotFriends",
 	112: "EResult_LimitedUserAccount",
 	113: "EResult_CantRemoveItem",
-	114: "EResult_AccountHasBeenDeleted",
-	115: "EResult_AccountHasAnExistingUserCancelledLicense",
-	116: "EResult_DeniedDueToCommunityCooldown",
+	114: "EResult_AccountDeleted",
+	115: "EResult_ExistingUserCancelledLicense",
+	116: "EResult_CommunityCooldown",
 	117: "EResult_NoLauncherSpecified",
 	118: "EResult_MustAgreeToSSA",
 	119: "EResult_LauncherMigrated",
-	120: "EResult_CurrentSteamRealmDoesNotMatch",
+	120: "EResult_SteamRealmMismatch",
 	121: "EResult_InvalidSignature",
 	122: "EResult_ParseFailure",
 	123: "EResult_NoVerifiedPhone",
+	124: "EResult_InsufficientBattery",
+	125: "EResult_ChargerRequired",
+	126: "EResult_CachedCredentialInvalid",
+	127: "EResult_PhoneNumberIsVOIP",
+	128: "EResult_NotSupported",
+	129: "EResult_FamilySizeLimitExceeded",
 }
 
 func (e EResult) String() string {
@@ -4022,7 +4097,7 @@ const (
 	EAccountFlags_Lockdown                   EAccountFlags = 8388608
 	EAccountFlags_MasterAppEditor            EAccountFlags = 16777216
 	EAccountFlags_BannedFromWebAPI           EAccountFlags = 33554432
-	EAccountFlags_ClansOnlyFromFriends       EAccountFlags = 67108864
+	EAccountFlags_PartnerMember              EAccountFlags = 67108864
 	EAccountFlags_GlobalModerator            EAccountFlags = 134217728
 	EAccountFlags_ParentalSettings           EAccountFlags = 268435456
 	EAccountFlags_ThirdPartySupport          EAccountFlags = 536870912
@@ -4057,7 +4132,7 @@ var EAccountFlags_name = map[EAccountFlags]string{
 	8388608:    "EAccountFlags_Lockdown",
 	16777216:   "EAccountFlags_MasterAppEditor",
 	33554432:   "EAccountFlags_BannedFromWebAPI",
-	67108864:   "EAccountFlags_ClansOnlyFromFriends",
+	67108864:   "EAccountFlags_PartnerMember",
 	134217728:  "EAccountFlags_GlobalModerator",
 	268435456:  "EAccountFlags_ParentalSettings",
 	536870912:  "EAccountFlags_ThirdPartySupport",
@@ -4259,10 +4334,10 @@ var EPersonaStateFlag_name = map[EPersonaStateFlag]string{
 	2:    "EPersonaStateFlag_InJoinableGame",
 	4:    "EPersonaStateFlag_Golden",
 	8:    "EPersonaStateFlag_RemotePlayTogether",
-	256:  "EPersonaStateFlag_OnlineUsingWeb",
-	512:  "EPersonaStateFlag_OnlineUsingMobile",
-	1024: "EPersonaStateFlag_OnlineUsingBigPicture",
-	2048: "EPersonaStateFlag_OnlineUsingVR",
+	256:  "EPersonaStateFlag_ClientTypeWeb",
+	512:  "EPersonaStateFlag_ClientTypeMobile",
+	1024: "EPersonaStateFlag_ClientTypeTenfoot",
+	2048: "EPersonaStateFlag_ClientTypeVR",
 	4096: "EPersonaStateFlag_LaunchTypeGamepad",
 	8192: "EPersonaStateFlag_LaunchTypeCompatTool",
 }
@@ -4293,11 +4368,9 @@ const (
 	EClientPersonaStateFlag_SourceID      EClientPersonaStateFlag = 8
 	EClientPersonaStateFlag_Presence      EClientPersonaStateFlag = 16
 	EClientPersonaStateFlag_LastSeen      EClientPersonaStateFlag = 64
-	EClientPersonaStateFlag_ClanInfo      EClientPersonaStateFlag = 128 // Deprecated: renamed to UserClanRank
 	EClientPersonaStateFlag_UserClanRank  EClientPersonaStateFlag = 128
 	EClientPersonaStateFlag_GameExtraInfo EClientPersonaStateFlag = 256
 	EClientPersonaStateFlag_GameDataBlob  EClientPersonaStateFlag = 512
-	EClientPersonaStateFlag_ClanTag       EClientPersonaStateFlag = 1024 // Deprecated: renamed to ClanData
 	EClientPersonaStateFlag_ClanData      EClientPersonaStateFlag = 1024
 	EClientPersonaStateFlag_Facebook      EClientPersonaStateFlag = 2048
 	EClientPersonaStateFlag_RichPresence  EClientPersonaStateFlag = 4096
@@ -4313,10 +4386,10 @@ var EClientPersonaStateFlag_name = map[EClientPersonaStateFlag]string{
 	16:    "EClientPersonaStateFlag_Presence",
 	32:    "EClientPersonaStateFlag_Metadata",
 	64:    "EClientPersonaStateFlag_LastSeen",
-	128:   "EClientPersonaStateFlag_ClanInfo",
+	128:   "EClientPersonaStateFlag_UserClanRank",
 	256:   "EClientPersonaStateFlag_GameExtraInfo",
 	512:   "EClientPersonaStateFlag_GameDataBlob",
-	1024:  "EClientPersonaStateFlag_ClanTag",
+	1024:  "EClientPersonaStateFlag_ClanData",
 	2048:  "EClientPersonaStateFlag_Facebook",
 	4096:  "EClientPersonaStateFlag_RichPresence",
 	8192:  "EClientPersonaStateFlag_Broadcast",
@@ -4397,22 +4470,34 @@ const (
 	ELicenseFlags_RegionRestrictionExpired     ELicenseFlags = 0x200
 	ELicenseFlags_CancelledByFriendlyFraudLock ELicenseFlags = 0x400
 	ELicenseFlags_NotActivated                 ELicenseFlags = 0x800
+	ELicenseFlags_PendingRefund                ELicenseFlags = 0x2000
+	ELicenseFlags_Borrowed                     ELicenseFlags = 0x4000
+	ELicenseFlags_ReleaseStateOverride         ELicenseFlags = 0x8000
+	ELicenseFlags_CancelledByPartner           ELicenseFlags = 0x40000
+	ELicenseFlags_NonPermanent                 ELicenseFlags = 0x80000
+	ELicenseFlags_PreferredOwner               ELicenseFlags = 0x100000
 )
 
 var ELicenseFlags_name = map[ELicenseFlags]string{
-	0:    "ELicenseFlags_None",
-	1:    "ELicenseFlags_Renew",
-	2:    "ELicenseFlags_RenewalFailed",
-	4:    "ELicenseFlags_Pending",
-	8:    "ELicenseFlags_Expired",
-	16:   "ELicenseFlags_CancelledByUser",
-	32:   "ELicenseFlags_CancelledByAdmin",
-	64:   "ELicenseFlags_LowViolenceContent",
-	128:  "ELicenseFlags_ImportedFromSteam2",
-	256:  "ELicenseFlags_ForceRunRestriction",
-	512:  "ELicenseFlags_RegionRestrictionExpired",
-	1024: "ELicenseFlags_CancelledByFriendlyFraudLock",
-	2048: "ELicenseFlags_NotActivated",
+	0:       "ELicenseFlags_None",
+	1:       "ELicenseFlags_Renew",
+	2:       "ELicenseFlags_RenewalFailed",
+	4:       "ELicenseFlags_Pending",
+	8:       "ELicenseFlags_Expired",
+	16:      "ELicenseFlags_CancelledByUser",
+	32:      "ELicenseFlags_CancelledByAdmin",
+	64:      "ELicenseFlags_LowViolenceContent",
+	128:     "ELicenseFlags_ImportedFromSteam2",
+	256:     "ELicenseFlags_ForceRunRestriction",
+	512:     "ELicenseFlags_RegionRestrictionExpired",
+	1024:    "ELicenseFlags_CancelledByFriendlyFraudLock",
+	2048:    "ELicenseFlags_NotActivated",
+	8192:    "ELicenseFlags_PendingRefund",
+	16384:   "ELicenseFlags_Borrowed",
+	32768:   "ELicenseFlags_ReleaseStateOverride",
+	262144:  "ELicenseFlags_CancelledByPartner",
+	524288:  "ELicenseFlags_NonPermanent",
+	1048576: "ELicenseFlags_PreferredOwner",
 }
 
 func (e ELicenseFlags) String() string {
@@ -4476,95 +4561,169 @@ func (e ELicenseType) String() string {
 type EPaymentMethod int32
 
 const (
-	EPaymentMethod_None                   EPaymentMethod = 0
-	EPaymentMethod_ActivationCode         EPaymentMethod = 1
-	EPaymentMethod_CreditCard             EPaymentMethod = 2
-	EPaymentMethod_Giropay                EPaymentMethod = 3
-	EPaymentMethod_PayPal                 EPaymentMethod = 4
-	EPaymentMethod_Ideal                  EPaymentMethod = 5
-	EPaymentMethod_PaySafeCard            EPaymentMethod = 6
-	EPaymentMethod_Sofort                 EPaymentMethod = 7
-	EPaymentMethod_GuestPass              EPaymentMethod = 8
-	EPaymentMethod_WebMoney               EPaymentMethod = 9
-	EPaymentMethod_MoneyBookers           EPaymentMethod = 10
-	EPaymentMethod_AliPay                 EPaymentMethod = 11
-	EPaymentMethod_Yandex                 EPaymentMethod = 12
-	EPaymentMethod_Kiosk                  EPaymentMethod = 13
-	EPaymentMethod_Qiwi                   EPaymentMethod = 14
-	EPaymentMethod_GameStop               EPaymentMethod = 15
-	EPaymentMethod_HardwarePromo          EPaymentMethod = 16
-	EPaymentMethod_MoPay                  EPaymentMethod = 17
-	EPaymentMethod_BoletoBancario         EPaymentMethod = 18
-	EPaymentMethod_BoaCompraGold          EPaymentMethod = 19
-	EPaymentMethod_BancoDoBrasilOnline    EPaymentMethod = 20
-	EPaymentMethod_ItauOnline             EPaymentMethod = 21
-	EPaymentMethod_BradescoOnline         EPaymentMethod = 22
-	EPaymentMethod_Pagseguro              EPaymentMethod = 23
-	EPaymentMethod_VisaBrazil             EPaymentMethod = 24
-	EPaymentMethod_AmexBrazil             EPaymentMethod = 25
-	EPaymentMethod_Aura                   EPaymentMethod = 26
-	EPaymentMethod_Hipercard              EPaymentMethod = 27
-	EPaymentMethod_MastercardBrazil       EPaymentMethod = 28
-	EPaymentMethod_DinersCardBrazil       EPaymentMethod = 29
-	EPaymentMethod_AuthorizedDevice       EPaymentMethod = 30
-	EPaymentMethod_MOLPoints              EPaymentMethod = 31
-	EPaymentMethod_ClickAndBuy            EPaymentMethod = 32
-	EPaymentMethod_Beeline                EPaymentMethod = 33
-	EPaymentMethod_Konbini                EPaymentMethod = 34
-	EPaymentMethod_EClubPoints            EPaymentMethod = 35
-	EPaymentMethod_CreditCardJapan        EPaymentMethod = 36
-	EPaymentMethod_BankTransferJapan      EPaymentMethod = 37
-	EPaymentMethod_PayEasy                EPaymentMethod = 38
-	EPaymentMethod_Zong                   EPaymentMethod = 39
-	EPaymentMethod_CultureVoucher         EPaymentMethod = 40
-	EPaymentMethod_BookVoucher            EPaymentMethod = 41
-	EPaymentMethod_HappymoneyVoucher      EPaymentMethod = 42
-	EPaymentMethod_ConvenientStoreVoucher EPaymentMethod = 43
-	EPaymentMethod_GameVoucher            EPaymentMethod = 44
-	EPaymentMethod_Multibanco             EPaymentMethod = 45
-	EPaymentMethod_Payshop                EPaymentMethod = 46
-	EPaymentMethod_MaestroBoaCompra       EPaymentMethod = 47
-	EPaymentMethod_OXXO                   EPaymentMethod = 48
-	EPaymentMethod_ToditoCash             EPaymentMethod = 49
-	EPaymentMethod_Carnet                 EPaymentMethod = 50
-	EPaymentMethod_SPEI                   EPaymentMethod = 51
-	EPaymentMethod_ThreePay               EPaymentMethod = 52
-	EPaymentMethod_IsBank                 EPaymentMethod = 53
-	EPaymentMethod_Garanti                EPaymentMethod = 54
-	EPaymentMethod_Akbank                 EPaymentMethod = 55
-	EPaymentMethod_YapiKredi              EPaymentMethod = 56
-	EPaymentMethod_Halkbank               EPaymentMethod = 57
-	EPaymentMethod_BankAsya               EPaymentMethod = 58
-	EPaymentMethod_Finansbank             EPaymentMethod = 59
-	EPaymentMethod_DenizBank              EPaymentMethod = 60
-	EPaymentMethod_PTT                    EPaymentMethod = 61
-	EPaymentMethod_CashU                  EPaymentMethod = 62
-	EPaymentMethod_AutoGrant              EPaymentMethod = 64
-	EPaymentMethod_WebMoneyJapan          EPaymentMethod = 65
-	EPaymentMethod_OneCard                EPaymentMethod = 66
-	EPaymentMethod_PSE                    EPaymentMethod = 67
-	EPaymentMethod_Exito                  EPaymentMethod = 68
-	EPaymentMethod_Efecty                 EPaymentMethod = 69
-	EPaymentMethod_Paloto                 EPaymentMethod = 70
-	EPaymentMethod_PinValidda             EPaymentMethod = 71
-	EPaymentMethod_MangirKart             EPaymentMethod = 72
-	EPaymentMethod_BancoCreditoDePeru     EPaymentMethod = 73
-	EPaymentMethod_BBVAContinental        EPaymentMethod = 74
-	EPaymentMethod_SafetyPay              EPaymentMethod = 75
-	EPaymentMethod_PagoEfectivo           EPaymentMethod = 76
-	EPaymentMethod_Trustly                EPaymentMethod = 77
-	EPaymentMethod_UnionPay               EPaymentMethod = 78
-	EPaymentMethod_BitCoin                EPaymentMethod = 79
-	EPaymentMethod_Wallet                 EPaymentMethod = 128
-	EPaymentMethod_Valve                  EPaymentMethod = 129
-	EPaymentMethod_MasterComp             EPaymentMethod = 130
-	EPaymentMethod_Promotional            EPaymentMethod = 131
-	EPaymentMethod_MasterSubscription     EPaymentMethod = 134
-	EPaymentMethod_Payco                  EPaymentMethod = 135
-	EPaymentMethod_MobileWalletJapan      EPaymentMethod = 136
-	EPaymentMethod_OEMTicket              EPaymentMethod = 256
-	EPaymentMethod_Split                  EPaymentMethod = 512
-	EPaymentMethod_Complimentary          EPaymentMethod = 1024
+	EPaymentMethod_None                        EPaymentMethod = 0
+	EPaymentMethod_ActivationCode              EPaymentMethod = 1
+	EPaymentMethod_CreditCard                  EPaymentMethod = 2
+	EPaymentMethod_Giropay                     EPaymentMethod = 3
+	EPaymentMethod_PayPal                      EPaymentMethod = 4
+	EPaymentMethod_Ideal                       EPaymentMethod = 5
+	EPaymentMethod_PaySafeCard                 EPaymentMethod = 6
+	EPaymentMethod_Sofort                      EPaymentMethod = 7
+	EPaymentMethod_GuestPass                   EPaymentMethod = 8
+	EPaymentMethod_WebMoney                    EPaymentMethod = 9
+	EPaymentMethod_MoneyBookers                EPaymentMethod = 10
+	EPaymentMethod_AliPay                      EPaymentMethod = 11
+	EPaymentMethod_Yandex                      EPaymentMethod = 12
+	EPaymentMethod_Kiosk                       EPaymentMethod = 13
+	EPaymentMethod_Qiwi                        EPaymentMethod = 14
+	EPaymentMethod_GameStop                    EPaymentMethod = 15
+	EPaymentMethod_HardwarePromo               EPaymentMethod = 16
+	EPaymentMethod_MoPay                       EPaymentMethod = 17
+	EPaymentMethod_BoletoBancario              EPaymentMethod = 18
+	EPaymentMethod_BoaCompraGold               EPaymentMethod = 19
+	EPaymentMethod_BancoDoBrasilOnline         EPaymentMethod = 20
+	EPaymentMethod_ItauOnline                  EPaymentMethod = 21
+	EPaymentMethod_BradescoOnline              EPaymentMethod = 22
+	EPaymentMethod_Pagseguro                   EPaymentMethod = 23
+	EPaymentMethod_VisaBrazil                  EPaymentMethod = 24
+	EPaymentMethod_AmexBrazil                  EPaymentMethod = 25
+	EPaymentMethod_Aura                        EPaymentMethod = 26
+	EPaymentMethod_Hipercard                   EPaymentMethod = 27
+	EPaymentMethod_MastercardBrazil            EPaymentMethod = 28
+	EPaymentMethod_DinersCardBrazil            EPaymentMethod = 29
+	EPaymentMethod_AuthorizedDevice            EPaymentMethod = 30
+	EPaymentMethod_MOLPoints                   EPaymentMethod = 31
+	EPaymentMethod_ClickAndBuy                 EPaymentMethod = 32
+	EPaymentMethod_Beeline                     EPaymentMethod = 33
+	EPaymentMethod_Konbini                     EPaymentMethod = 34
+	EPaymentMethod_EClubPoints                 EPaymentMethod = 35
+	EPaymentMethod_CreditCardJapan             EPaymentMethod = 36
+	EPaymentMethod_BankTransferJapan           EPaymentMethod = 37
+	EPaymentMethod_PayEasy                     EPaymentMethod = 38
+	EPaymentMethod_Zong                        EPaymentMethod = 39
+	EPaymentMethod_CultureVoucher              EPaymentMethod = 40
+	EPaymentMethod_BookVoucher                 EPaymentMethod = 41
+	EPaymentMethod_HappymoneyVoucher           EPaymentMethod = 42
+	EPaymentMethod_ConvenientStoreVoucher      EPaymentMethod = 43
+	EPaymentMethod_GameVoucher                 EPaymentMethod = 44
+	EPaymentMethod_Multibanco                  EPaymentMethod = 45
+	EPaymentMethod_Payshop                     EPaymentMethod = 46
+	EPaymentMethod_MaestroBoaCompra            EPaymentMethod = 47
+	EPaymentMethod_OXXO                        EPaymentMethod = 48
+	EPaymentMethod_ToditoCash                  EPaymentMethod = 49
+	EPaymentMethod_Carnet                      EPaymentMethod = 50
+	EPaymentMethod_SPEI                        EPaymentMethod = 51
+	EPaymentMethod_ThreePay                    EPaymentMethod = 52
+	EPaymentMethod_IsBank                      EPaymentMethod = 53
+	EPaymentMethod_Garanti                     EPaymentMethod = 54
+	EPaymentMethod_Akbank                      EPaymentMethod = 55
+	EPaymentMethod_YapiKredi                   EPaymentMethod = 56
+	EPaymentMethod_Halkbank                    EPaymentMethod = 57
+	EPaymentMethod_BankAsya                    EPaymentMethod = 58
+	EPaymentMethod_Finansbank                  EPaymentMethod = 59
+	EPaymentMethod_DenizBank                   EPaymentMethod = 60
+	EPaymentMethod_PTT                         EPaymentMethod = 61
+	EPaymentMethod_CashU                       EPaymentMethod = 62
+	EPaymentMethod_SantanderRio                EPaymentMethod = 63
+	EPaymentMethod_AutoGrant                   EPaymentMethod = 64
+	EPaymentMethod_WebMoneyJapan               EPaymentMethod = 65
+	EPaymentMethod_OneCard                     EPaymentMethod = 66
+	EPaymentMethod_PSE                         EPaymentMethod = 67
+	EPaymentMethod_Exito                       EPaymentMethod = 68
+	EPaymentMethod_Efecty                      EPaymentMethod = 69
+	EPaymentMethod_Paloto                      EPaymentMethod = 70
+	EPaymentMethod_PinValidda                  EPaymentMethod = 71
+	EPaymentMethod_MangirKart                  EPaymentMethod = 72
+	EPaymentMethod_BancoCreditoDePeru          EPaymentMethod = 73
+	EPaymentMethod_BBVAContinental             EPaymentMethod = 74
+	EPaymentMethod_SafetyPay                   EPaymentMethod = 75
+	EPaymentMethod_PagoEfectivo                EPaymentMethod = 76
+	EPaymentMethod_Trustly                     EPaymentMethod = 77
+	EPaymentMethod_UnionPay                    EPaymentMethod = 78
+	EPaymentMethod_BitCoin                     EPaymentMethod = 79
+	EPaymentMethod_LicensedSite                EPaymentMethod = 80
+	EPaymentMethod_BitCash                     EPaymentMethod = 81
+	EPaymentMethod_NetCash                     EPaymentMethod = 82
+	EPaymentMethod_Nanaco                      EPaymentMethod = 83
+	EPaymentMethod_Tenpay                      EPaymentMethod = 84
+	EPaymentMethod_WeChat                      EPaymentMethod = 85
+	EPaymentMethod_CashonDelivery              EPaymentMethod = 86
+	EPaymentMethod_CreditCardNodwin            EPaymentMethod = 87
+	EPaymentMethod_DebitCardNodwin             EPaymentMethod = 88
+	EPaymentMethod_NetBankingNodwin            EPaymentMethod = 89
+	EPaymentMethod_CashCardNodwin              EPaymentMethod = 90
+	EPaymentMethod_WalletNodwin                EPaymentMethod = 91
+	EPaymentMethod_MobileDegica                EPaymentMethod = 92
+	EPaymentMethod_Naranja                     EPaymentMethod = 93
+	EPaymentMethod_Cencosud                    EPaymentMethod = 94
+	EPaymentMethod_Cabal                       EPaymentMethod = 95
+	EPaymentMethod_PagoFacil                   EPaymentMethod = 96
+	EPaymentMethod_Rapipago                    EPaymentMethod = 97
+	EPaymentMethod_BancoNacionaldeCostaRica    EPaymentMethod = 98
+	EPaymentMethod_BancoPoplar                 EPaymentMethod = 99
+	EPaymentMethod_RedPagos                    EPaymentMethod = 100
+	EPaymentMethod_SPE                         EPaymentMethod = 101
+	EPaymentMethod_Multicaja                   EPaymentMethod = 102
+	EPaymentMethod_RedCompra                   EPaymentMethod = 103
+	EPaymentMethod_ZiraatBank                  EPaymentMethod = 104
+	EPaymentMethod_VakiflarBank                EPaymentMethod = 105
+	EPaymentMethod_KuveytTurkBank              EPaymentMethod = 106
+	EPaymentMethod_EkonomiBank                 EPaymentMethod = 107
+	EPaymentMethod_Pichincha                   EPaymentMethod = 108
+	EPaymentMethod_PichinchaCash               EPaymentMethod = 109
+	EPaymentMethod_Przelewy24                  EPaymentMethod = 110
+	EPaymentMethod_Trustpay                    EPaymentMethod = 111
+	EPaymentMethod_POLi                        EPaymentMethod = 112
+	EPaymentMethod_MercadoPago                 EPaymentMethod = 113
+	EPaymentMethod_PayU                        EPaymentMethod = 114
+	EPaymentMethod_VTCPayWallet                EPaymentMethod = 115
+	EPaymentMethod_MrCash                      EPaymentMethod = 116
+	EPaymentMethod_EPS                         EPaymentMethod = 117
+	EPaymentMethod_Interac                     EPaymentMethod = 118
+	EPaymentMethod_VTCPayCards                 EPaymentMethod = 119
+	EPaymentMethod_VTCPayOnlineBanking         EPaymentMethod = 120
+	EPaymentMethod_VisaElectronBoaCompra       EPaymentMethod = 121
+	EPaymentMethod_CafeFunded                  EPaymentMethod = 122
+	EPaymentMethod_OCA                         EPaymentMethod = 123
+	EPaymentMethod_Lider                       EPaymentMethod = 124
+	EPaymentMethod_WebMoneySteamCardJapan      EPaymentMethod = 125
+	EPaymentMethod_WebMoneySteamCardTopUpJapan EPaymentMethod = 126
+	EPaymentMethod_Toss                        EPaymentMethod = 127
+	EPaymentMethod_Wallet                      EPaymentMethod = 128
+	EPaymentMethod_Valve                       EPaymentMethod = 129
+	EPaymentMethod_MasterComp                  EPaymentMethod = 130
+	EPaymentMethod_Promotional                 EPaymentMethod = 131
+	EPaymentMethod_MasterSubscription          EPaymentMethod = 134
+	EPaymentMethod_Payco                       EPaymentMethod = 135
+	EPaymentMethod_MobileWalletJapan           EPaymentMethod = 136
+	EPaymentMethod_BoletoFlash                 EPaymentMethod = 137
+	EPaymentMethod_PIX                         EPaymentMethod = 138
+	EPaymentMethod_GCash                       EPaymentMethod = 139
+	EPaymentMethod_KakaoPay                    EPaymentMethod = 140
+	EPaymentMethod_Dana                        EPaymentMethod = 141
+	EPaymentMethod_TrueMoney                   EPaymentMethod = 142
+	EPaymentMethod_TouchnGo                    EPaymentMethod = 143
+	EPaymentMethod_LinePay                     EPaymentMethod = 144
+	EPaymentMethod_MerPay                      EPaymentMethod = 145
+	EPaymentMethod_PayPay                      EPaymentMethod = 146
+	EPaymentMethod_AlfaClick                   EPaymentMethod = 147
+	EPaymentMethod_Sberbank                    EPaymentMethod = 148
+	EPaymentMethod_YooMoney                    EPaymentMethod = 149
+	EPaymentMethod_Tinkoff                     EPaymentMethod = 150
+	EPaymentMethod_CashInCIS                   EPaymentMethod = 151
+	EPaymentMethod_AuPAY                       EPaymentMethod = 152
+	EPaymentMethod_AliPayHK                    EPaymentMethod = 153
+	EPaymentMethod_NaverPay                    EPaymentMethod = 154
+	EPaymentMethod_Linkaja                     EPaymentMethod = 155
+	EPaymentMethod_ShopeePay                   EPaymentMethod = 156
+	EPaymentMethod_GrabPay                     EPaymentMethod = 157
+	EPaymentMethod_PayNow                      EPaymentMethod = 158
+	EPaymentMethod_OnlineBankingThailand       EPaymentMethod = 159
+	EPaymentMethod_CashOptionsThailand         EPaymentMethod = 160
+	EPaymentMethod_OEMTicket                   EPaymentMethod = 256
+	EPaymentMethod_Split                       EPaymentMethod = 512
+	EPaymentMethod_Complimentary               EPaymentMethod = 1024
+	EPaymentMethod_FamilyGroup                 EPaymentMethod = 1025
 )
 
 var EPaymentMethod_name = map[EPaymentMethod]string{
@@ -4606,7 +4765,7 @@ var EPaymentMethod_name = map[EPaymentMethod]string{
 	35:   "EPaymentMethod_EClubPoints",
 	36:   "EPaymentMethod_CreditCardJapan",
 	37:   "EPaymentMethod_BankTransferJapan",
-	38:   "EPaymentMethod_PayEasyJapan",
+	38:   "EPaymentMethod_PayEasy",
 	39:   "EPaymentMethod_Zong",
 	40:   "EPaymentMethod_CultureVoucher",
 	41:   "EPaymentMethod_BookVoucher",
@@ -4615,7 +4774,7 @@ var EPaymentMethod_name = map[EPaymentMethod]string{
 	44:   "EPaymentMethod_GameVoucher",
 	45:   "EPaymentMethod_Multibanco",
 	46:   "EPaymentMethod_Payshop",
-	47:   "EPaymentMethod_Maestro",
+	47:   "EPaymentMethod_MaestroBoaCompra",
 	48:   "EPaymentMethod_OXXO",
 	49:   "EPaymentMethod_ToditoCash",
 	50:   "EPaymentMethod_Carnet",
@@ -4631,6 +4790,7 @@ var EPaymentMethod_name = map[EPaymentMethod]string{
 	60:   "EPaymentMethod_DenizBank",
 	61:   "EPaymentMethod_PTT",
 	62:   "EPaymentMethod_CashU",
+	63:   "EPaymentMethod_SantanderRio",
 	64:   "EPaymentMethod_AutoGrant",
 	65:   "EPaymentMethod_WebMoneyJapan",
 	66:   "EPaymentMethod_OneCard",
@@ -4647,16 +4807,89 @@ var EPaymentMethod_name = map[EPaymentMethod]string{
 	77:   "EPaymentMethod_Trustly",
 	78:   "EPaymentMethod_UnionPay",
 	79:   "EPaymentMethod_BitCoin",
+	80:   "EPaymentMethod_LicensedSite",
+	81:   "EPaymentMethod_BitCash",
+	82:   "EPaymentMethod_NetCash",
+	83:   "EPaymentMethod_Nanaco",
+	84:   "EPaymentMethod_Tenpay",
+	85:   "EPaymentMethod_WeChat",
+	86:   "EPaymentMethod_CashonDelivery",
+	87:   "EPaymentMethod_CreditCardNodwin",
+	88:   "EPaymentMethod_DebitCardNodwin",
+	89:   "EPaymentMethod_NetBankingNodwin",
+	90:   "EPaymentMethod_CashCardNodwin",
+	91:   "EPaymentMethod_WalletNodwin",
+	92:   "EPaymentMethod_MobileDegica",
+	93:   "EPaymentMethod_Naranja",
+	94:   "EPaymentMethod_Cencosud",
+	95:   "EPaymentMethod_Cabal",
+	96:   "EPaymentMethod_PagoFacil",
+	97:   "EPaymentMethod_Rapipago",
+	98:   "EPaymentMethod_BancoNacionaldeCostaRica",
+	99:   "EPaymentMethod_BancoPoplar",
+	100:  "EPaymentMethod_RedPagos",
+	101:  "EPaymentMethod_SPE",
+	102:  "EPaymentMethod_Multicaja",
+	103:  "EPaymentMethod_RedCompra",
+	104:  "EPaymentMethod_ZiraatBank",
+	105:  "EPaymentMethod_VakiflarBank",
+	106:  "EPaymentMethod_KuveytTurkBank",
+	107:  "EPaymentMethod_EkonomiBank",
+	108:  "EPaymentMethod_Pichincha",
+	109:  "EPaymentMethod_PichinchaCash",
+	110:  "EPaymentMethod_Przelewy24",
+	111:  "EPaymentMethod_Trustpay",
+	112:  "EPaymentMethod_POLi",
+	113:  "EPaymentMethod_MercadoPago",
+	114:  "EPaymentMethod_PayU",
+	115:  "EPaymentMethod_VTCPayWallet",
+	116:  "EPaymentMethod_MrCash",
+	117:  "EPaymentMethod_EPS",
+	118:  "EPaymentMethod_Interac",
+	119:  "EPaymentMethod_VTCPayCards",
+	120:  "EPaymentMethod_VTCPayOnlineBanking",
+	121:  "EPaymentMethod_VisaElectronBoaCompra",
+	122:  "EPaymentMethod_CafeFunded",
+	123:  "EPaymentMethod_OCA",
+	124:  "EPaymentMethod_Lider",
+	125:  "EPaymentMethod_WebMoneySteamCardJapan",
+	126:  "EPaymentMethod_WebMoneySteamCardTopUpJapan",
+	127:  "EPaymentMethod_Toss",
 	128:  "EPaymentMethod_Wallet",
 	129:  "EPaymentMethod_Valve",
-	130:  "EPaymentMethod_SteamPressMaster",
-	131:  "EPaymentMethod_StorePromotion",
+	130:  "EPaymentMethod_MasterComp",
+	131:  "EPaymentMethod_Promotional",
 	134:  "EPaymentMethod_MasterSubscription",
 	135:  "EPaymentMethod_Payco",
 	136:  "EPaymentMethod_MobileWalletJapan",
+	137:  "EPaymentMethod_BoletoFlash",
+	138:  "EPaymentMethod_PIX",
+	139:  "EPaymentMethod_GCash",
+	140:  "EPaymentMethod_KakaoPay",
+	141:  "EPaymentMethod_Dana",
+	142:  "EPaymentMethod_TrueMoney",
+	143:  "EPaymentMethod_TouchnGo",
+	144:  "EPaymentMethod_LinePay",
+	145:  "EPaymentMethod_MerPay",
+	146:  "EPaymentMethod_PayPay",
+	147:  "EPaymentMethod_AlfaClick",
+	148:  "EPaymentMethod_Sberbank",
+	149:  "EPaymentMethod_YooMoney",
+	150:  "EPaymentMethod_Tinkoff",
+	151:  "EPaymentMethod_CashInCIS",
+	152:  "EPaymentMethod_AuPAY",
+	153:  "EPaymentMethod_AliPayHK",
+	154:  "EPaymentMethod_NaverPay",
+	155:  "EPaymentMethod_Linkaja",
+	156:  "EPaymentMethod_ShopeePay",
+	157:  "EPaymentMethod_GrabPay",
+	158:  "EPaymentMethod_PayNow",
+	159:  "EPaymentMethod_OnlineBankingThailand",
+	160:  "EPaymentMethod_CashOptionsThailand",
 	256:  "EPaymentMethod_OEMTicket",
 	512:  "EPaymentMethod_Split",
 	1024: "EPaymentMethod_Complimentary",
+	1025: "EPaymentMethod_FamilyGroup",
 }
 
 func (e EPaymentMethod) String() string {
@@ -5541,7 +5774,12 @@ const (
 	EOSType_MacOS111       EOSType = -79
 	EOSType_MacOS1017      EOSType = -78
 	EOSType_MacOS12        EOSType = -77
-	EOSType_MacOS13        EOSType = -76
+	EOSType_MacOS1018      EOSType = -76
+	EOSType_MacOS13        EOSType = -75
+	EOSType_MacOS1019      EOSType = -74
+	EOSType_MacOS14        EOSType = -73
+	EOSType_MacOS1020      EOSType = -72
+	EOSType_MacOS15        EOSType = -71
 	EOSType_MacOSMax       EOSType = -1
 	EOSType_LinuxUnknown   EOSType = -203
 	EOSType_Linux22        EOSType = -202
@@ -5652,7 +5890,12 @@ var EOSType_name = map[EOSType]string{
 	-79:  "EOSType_MacOS111",
 	-78:  "EOSType_MacOS1017",
 	-77:  "EOSType_MacOS12",
-	-76:  "EOSType_MacOS13",
+	-76:  "EOSType_MacOS1018",
+	-75:  "EOSType_MacOS13",
+	-74:  "EOSType_MacOS1019",
+	-73:  "EOSType_MacOS14",
+	-72:  "EOSType_MacOS1020",
+	-71:  "EOSType_MacOS15",
 	-203: "EOSType_LinuxUnknown",
 	-202: "EOSType_Linux22",
 	-201: "EOSType_Linux24",
@@ -5681,17 +5924,17 @@ var EOSType_name = map[EOSType]string{
 	3:    "EOSType_Win98",
 	4:    "EOSType_WinME",
 	5:    "EOSType_WinNT",
-	6:    "EOSType_Win200",
+	6:    "EOSType_Win2000",
 	7:    "EOSType_WinXP",
 	8:    "EOSType_Win2003",
 	9:    "EOSType_WinVista",
-	10:   "EOSType_Win7",
+	10:   "EOSType_Windows7",
 	11:   "EOSType_Win2008",
 	12:   "EOSType_Win2012",
-	13:   "EOSType_Win8",
-	14:   "EOSType_Win81",
+	13:   "EOSType_Windows8",
+	14:   "EOSType_Windows81",
 	15:   "EOSType_Win2012R2",
-	16:   "EOSType_Win10",
+	16:   "EOSType_Windows10",
 	17:   "EOSType_Win2016",
 	18:   "EOSType_Win2019",
 	19:   "EOSType_Win2022",
@@ -5801,7 +6044,7 @@ const (
 	EServerType_Steam2Emulator      EServerType = 79
 	EServerType_PublicTest          EServerType = 80
 	EServerType_SolrMgr             EServerType = 81
-	EServerType_BroadcastRelay      EServerType = 82
+	EServerType_BroadcastIngestor   EServerType = 82
 	EServerType_BroadcastDirectory  EServerType = 83
 	EServerType_VideoManager        EServerType = 84
 	EServerType_TradeOffer          EServerType = 85
@@ -5863,7 +6106,7 @@ var EServerType_name = map[EServerType]string{
 	6:   "EServerType_ATS",
 	7:   "EServerType_CM",
 	8:   "EServerType_FBS",
-	9:   "EServerType_FG",
+	9:   "EServerType_BoxMonitor",
 	10:  "EServerType_SS",
 	11:  "EServerType_DRMS",
 	12:  "EServerType_HubOBSOLETE",
@@ -5877,7 +6120,7 @@ var EServerType_name = map[EServerType]string{
 	20:  "EServerType_SLC",
 	21:  "EServerType_UFS",
 	23:  "EServerType_Util",
-	24:  "EServerType_DSS",
+	24:  "EServerType_Community",
 	25:  "EServerType_P2PRelayOBSOLETE",
 	26:  "EServerType_AppInformation",
 	27:  "EServerType_Spare",
@@ -5904,7 +6147,7 @@ var EServerType_name = map[EServerType]string{
 	48:  "EServerType_Econ",
 	49:  "EServerType_Backpack",
 	50:  "EServerType_UGS",
-	51:  "EServerType_Store",
+	51:  "EServerType_StoreFeature",
 	52:  "EServerType_MoneyStats",
 	53:  "EServerType_CRE",
 	54:  "EServerType_UMQ",
@@ -5935,7 +6178,7 @@ var EServerType_name = map[EServerType]string{
 	79:  "EServerType_Steam2Emulator",
 	80:  "EServerType_PublicTest",
 	81:  "EServerType_SolrMgr",
-	82:  "EServerType_BroadcastRelay",
+	82:  "EServerType_BroadcastIngestor",
 	83:  "EServerType_BroadcastDirectory",
 	84:  "EServerType_VideoManager",
 	85:  "EServerType_TradeOffer",
@@ -6258,6 +6501,12 @@ const (
 	ECurrencyCode_QAR     ECurrencyCode = 39
 	ECurrencyCode_CRC     ECurrencyCode = 40
 	ECurrencyCode_UYU     ECurrencyCode = 41
+	ECurrencyCode_BGN     ECurrencyCode = 42
+	ECurrencyCode_HRK     ECurrencyCode = 43
+	ECurrencyCode_CZK     ECurrencyCode = 44
+	ECurrencyCode_DKK     ECurrencyCode = 45
+	ECurrencyCode_HUF     ECurrencyCode = 46
+	ECurrencyCode_RON     ECurrencyCode = 47
 )
 
 var ECurrencyCode_name = map[ECurrencyCode]string{
@@ -6302,6 +6551,12 @@ var ECurrencyCode_name = map[ECurrencyCode]string{
 	39: "ECurrencyCode_QAR",
 	40: "ECurrencyCode_CRC",
 	41: "ECurrencyCode_UYU",
+	42: "ECurrencyCode_BGN",
+	43: "ECurrencyCode_HRK",
+	44: "ECurrencyCode_CZK",
+	45: "ECurrencyCode_DKK",
+	46: "ECurrencyCode_HUF",
+	47: "ECurrencyCode_RON",
 }
 
 func (e ECurrencyCode) String() string {
@@ -6411,12 +6666,14 @@ const (
 	EPublishedFileVisibility_Public      EPublishedFileVisibility = 0
 	EPublishedFileVisibility_FriendsOnly EPublishedFileVisibility = 1
 	EPublishedFileVisibility_Private     EPublishedFileVisibility = 2
+	EPublishedFileVisibility_Unlisted    EPublishedFileVisibility = 3
 )
 
 var EPublishedFileVisibility_name = map[EPublishedFileVisibility]string{
 	0: "EPublishedFileVisibility_Public",
 	1: "EPublishedFileVisibility_FriendsOnly",
 	2: "EPublishedFileVisibility_Private",
+	3: "EPublishedFileVisibility_Unlisted",
 }
 
 func (e EPublishedFileVisibility) String() string {
@@ -6456,6 +6713,7 @@ const (
 	EWorkshopFileType_SteamworksAccessInvite EWorkshopFileType = 13
 	EWorkshopFileType_SteamVideo             EWorkshopFileType = 14
 	EWorkshopFileType_GameManagedItem        EWorkshopFileType = 15
+	EWorkshopFileType_Clip                   EWorkshopFileType = 16
 )
 
 var EWorkshopFileType_name = map[EWorkshopFileType]string{
@@ -6475,6 +6733,7 @@ var EWorkshopFileType_name = map[EWorkshopFileType]string{
 	13: "EWorkshopFileType_SteamworksAccessInvite",
 	14: "EWorkshopFileType_SteamVideo",
 	15: "EWorkshopFileType_GameManagedItem",
+	16: "EWorkshopFileType_Clip",
 }
 
 func (e EWorkshopFileType) String() string {
@@ -7125,7 +7384,8 @@ const (
 	EUCMFilePrivacyState_Private     EUCMFilePrivacyState = 2
 	EUCMFilePrivacyState_FriendsOnly EUCMFilePrivacyState = 4
 	EUCMFilePrivacyState_Public      EUCMFilePrivacyState = 8
-	EUCMFilePrivacyState_All         EUCMFilePrivacyState = EUCMFilePrivacyState_Public | EUCMFilePrivacyState_FriendsOnly | EUCMFilePrivacyState_Private
+	EUCMFilePrivacyState_Unlisted    EUCMFilePrivacyState = 16
+	EUCMFilePrivacyState_All         EUCMFilePrivacyState = EUCMFilePrivacyState_Public | EUCMFilePrivacyState_FriendsOnly | EUCMFilePrivacyState_Private | EUCMFilePrivacyState_Unlisted
 )
 
 var EUCMFilePrivacyState_name = map[EUCMFilePrivacyState]string{
@@ -7133,7 +7393,8 @@ var EUCMFilePrivacyState_name = map[EUCMFilePrivacyState]string{
 	2:  "EUCMFilePrivacyState_Private",
 	4:  "EUCMFilePrivacyState_FriendsOnly",
 	8:  "EUCMFilePrivacyState_Public",
-	14: "EUCMFilePrivacyState_All",
+	16: "EUCMFilePrivacyState_Unlisted",
+	30: "EUCMFilePrivacyState_All",
 }
 
 func (e EUCMFilePrivacyState) String() string {
@@ -7321,6 +7582,11 @@ const (
 	EDisplayStatus_AvailToBorrow    EDisplayStatus = 29
 	EDisplayStatus_AvailGuestPass   EDisplayStatus = 30
 	EDisplayStatus_Purchase         EDisplayStatus = 31
+	EDisplayStatus_Unavailable      EDisplayStatus = 32
+	EDisplayStatus_NotLaunchable    EDisplayStatus = 33
+	EDisplayStatus_CloudError       EDisplayStatus = 34
+	EDisplayStatus_CloudOutOfDate   EDisplayStatus = 35
+	EDisplayStatus_Terminating      EDisplayStatus = 36
 )
 
 var EDisplayStatus_name = map[EDisplayStatus]string{
@@ -7356,6 +7622,11 @@ var EDisplayStatus_name = map[EDisplayStatus]string{
 	29: "EDisplayStatus_AvailToBorrow",
 	30: "EDisplayStatus_AvailGuestPass",
 	31: "EDisplayStatus_Purchase",
+	32: "EDisplayStatus_Unavailable",
+	33: "EDisplayStatus_NotLaunchable",
+	34: "EDisplayStatus_CloudError",
+	35: "EDisplayStatus_CloudOutOfDate",
+	36: "EDisplayStatus_Terminating",
 }
 
 func (e EDisplayStatus) String() string {
@@ -7597,13 +7868,14 @@ func (e EChatRoomServerMsg) String() string {
 type EChatRoomGroupRank int32
 
 const (
-	EChatRoomGroupRank_Default   EChatRoomGroupRank = 0
-	EChatRoomGroupRank_Viewer    EChatRoomGroupRank = 10
-	EChatRoomGroupRank_Guest     EChatRoomGroupRank = 15
-	EChatRoomGroupRank_Member    EChatRoomGroupRank = 20
-	EChatRoomGroupRank_Moderator EChatRoomGroupRank = 30
-	EChatRoomGroupRank_Officer   EChatRoomGroupRank = 40
-	EChatRoomGroupRank_Owner     EChatRoomGroupRank = 50
+	EChatRoomGroupRank_Default     EChatRoomGroupRank = 0
+	EChatRoomGroupRank_Viewer      EChatRoomGroupRank = 10
+	EChatRoomGroupRank_Guest       EChatRoomGroupRank = 15
+	EChatRoomGroupRank_Member      EChatRoomGroupRank = 20
+	EChatRoomGroupRank_Moderator   EChatRoomGroupRank = 30
+	EChatRoomGroupRank_Officer     EChatRoomGroupRank = 40
+	EChatRoomGroupRank_Owner       EChatRoomGroupRank = 50
+	EChatRoomGroupRank_TestInvalid EChatRoomGroupRank = 99
 )
 
 var EChatRoomGroupRank_name = map[EChatRoomGroupRank]string{
@@ -7614,6 +7886,7 @@ var EChatRoomGroupRank_name = map[EChatRoomGroupRank]string{
 	30: "EChatRoomGroupRank_Moderator",
 	40: "EChatRoomGroupRank_Officer",
 	50: "EChatRoomGroupRank_Owner",
+	99: "EChatRoomGroupRank_TestInvalid",
 }
 
 func (e EChatRoomGroupRank) String() string {
@@ -7722,15 +7995,17 @@ func (e EChatRoomGroupAction) String() string {
 type EChatRoomJoinState int32
 
 const (
-	EChatRoomJoinState_Default EChatRoomJoinState = 0
-	EChatRoomJoinState_None    EChatRoomJoinState = 1
-	EChatRoomJoinState_Joined  EChatRoomJoinState = 2
+	EChatRoomJoinState_Default     EChatRoomJoinState = 0
+	EChatRoomJoinState_None        EChatRoomJoinState = 1
+	EChatRoomJoinState_Joined      EChatRoomJoinState = 2
+	EChatRoomJoinState_TestInvalid EChatRoomJoinState = 99
 )
 
 var EChatRoomJoinState_name = map[EChatRoomJoinState]string{
-	0: "EChatRoomJoinState_Default",
-	1: "EChatRoomJoinState_None",
-	2: "EChatRoomJoinState_Joined",
+	0:  "EChatRoomJoinState_Default",
+	1:  "EChatRoomJoinState_None",
+	2:  "EChatRoomJoinState_Joined",
+	99: "EChatRoomJoinState_TestInvalid",
 }
 
 func (e EChatRoomJoinState) String() string {
@@ -8118,6 +8393,7 @@ const (
 	ELauncherType_Headless     ELauncherType = 6
 	ELauncherType_SteamChina   ELauncherType = 7
 	ELauncherType_SingleApp    ELauncherType = 8
+	ELauncherType_GameServer   ELauncherType = 9
 )
 
 var ELauncherType_name = map[ELauncherType]string{
@@ -8130,6 +8406,7 @@ var ELauncherType_name = map[ELauncherType]string{
 	6: "ELauncherType_Headless",
 	7: "ELauncherType_SteamChina",
 	8: "ELauncherType_SingleApp",
+	9: "ELauncherType_GameServer",
 }
 
 func (e ELauncherType) String() string {
@@ -8138,6 +8415,94 @@ func (e ELauncherType) String() string {
 	}
 	var flags []string
 	for k, v := range ELauncherType_name {
+		if e&k != 0 {
+			flags = append(flags, v)
+		}
+	}
+	if len(flags) == 0 {
+		return fmt.Sprintf("%d", e)
+	}
+	sort.Strings(flags)
+	return strings.Join(flags, " | ")
+}
+
+type EUIMode int32
+
+const (
+	EUIMode_Unknown        EUIMode = -1
+	EUIMode_VGUI           EUIMode = 0
+	EUIMode_Tenfoot        EUIMode = 1
+	EUIMode_Mobile         EUIMode = 2
+	EUIMode_Web            EUIMode = 3
+	EUIMode_ClientUI       EUIMode = 4
+	EUIMode_MobileChat     EUIMode = 5
+	EUIMode_EmbeddedClient EUIMode = 6
+)
+
+var EUIMode_name = map[EUIMode]string{
+	-1: "EUIMode_Unknown",
+	0:  "EUIMode_VGUI",
+	1:  "EUIMode_Tenfoot",
+	2:  "EUIMode_Mobile",
+	3:  "EUIMode_Web",
+	4:  "EUIMode_ClientUI",
+	5:  "EUIMode_MobileChat",
+	6:  "EUIMode_EmbeddedClient",
+}
+
+func (e EUIMode) String() string {
+	if s, ok := EUIMode_name[e]; ok {
+		return s
+	}
+	var flags []string
+	for k, v := range EUIMode_name {
+		if e&k != 0 {
+			flags = append(flags, v)
+		}
+	}
+	if len(flags) == 0 {
+		return fmt.Sprintf("%d", e)
+	}
+	sort.Strings(flags)
+	return strings.Join(flags, " | ")
+}
+
+type EGamingDeviceType int32
+
+const (
+	EGamingDeviceType_Unknown    EGamingDeviceType = 0
+	EGamingDeviceType_StandardPC EGamingDeviceType = 1
+	EGamingDeviceType_Console    EGamingDeviceType = 256
+	EGamingDeviceType_PS3        EGamingDeviceType = 272
+	EGamingDeviceType_Steambox   EGamingDeviceType = 288
+	EGamingDeviceType_Tesla      EGamingDeviceType = 320
+	EGamingDeviceType_Handheld   EGamingDeviceType = 512
+	EGamingDeviceType_Phone      EGamingDeviceType = 528
+	EGamingDeviceType_SteamOS    EGamingDeviceType = 541
+	EGamingDeviceType_SteamDeck  EGamingDeviceType = 544
+	EGamingDeviceType_LegionGoS  EGamingDeviceType = 545
+)
+
+var EGamingDeviceType_name = map[EGamingDeviceType]string{
+	0:   "EGamingDeviceType_Unknown",
+	1:   "EGamingDeviceType_StandardPC",
+	256: "EGamingDeviceType_Console",
+	272: "EGamingDeviceType_PS3",
+	288: "EGamingDeviceType_Steambox",
+	320: "EGamingDeviceType_Tesla",
+	512: "EGamingDeviceType_Handheld",
+	528: "EGamingDeviceType_Phone",
+	541: "EGamingDeviceType_SteamOS",
+	544: "EGamingDeviceType_SteamDeck",
+	545: "EGamingDeviceType_LegionGoS",
+}
+
+func (e EGamingDeviceType) String() string {
+	if s, ok := EGamingDeviceType_name[e]; ok {
+		return s
+	}
+	var flags []string
+	for k, v := range EGamingDeviceType_name {
 		if e&k != 0 {
 			flags = append(flags, v)
 		}

@@ -664,7 +664,7 @@ func (d *MsgChannelEncryptResult) Deserialize(r io.Reader) error {
 
 const (
 	MsgClientLogon_ObfuscationMask                                      uint32 = 0xBAADF00D
-	MsgClientLogon_CurrentProtocol                                      uint32 = 65580
+	MsgClientLogon_CurrentProtocol                                      uint32 = 65581
 	MsgClientLogon_ProtocolVerMajorMask                                 uint32 = 0xFFFF0000
 	MsgClientLogon_ProtocolVerMinorMask                                 uint32 = 0xFFFF
 	MsgClientLogon_ProtocolVerMinorMinGameServers                       uint16 = 4
@@ -2294,5 +2294,72 @@ func (d *MsgClientMarketingMessageUpdate2) Deserialize(r io.Reader) error {
 		return err
 	}
 	d.Count, err = rwu.ReadUint32(r)
+	return err
+}
+
+type MsgClientGetLegacyGameKey struct {
+	AppId uint32
+}
+
+func NewMsgClientGetLegacyGameKey() *MsgClientGetLegacyGameKey {
+	return &MsgClientGetLegacyGameKey{}
+}
+
+func (d *MsgClientGetLegacyGameKey) GetEMsg() EMsg {
+	return EMsg_ClientGetLegacyGameKey
+}
+
+func (d *MsgClientGetLegacyGameKey) Serialize(w io.Writer) error {
+	var err error
+	err = binary.Write(w, binary.LittleEndian, d.AppId)
+	return err
+}
+
+func (d *MsgClientGetLegacyGameKey) Deserialize(r io.Reader) error {
+	var err error
+	d.AppId, err = rwu.ReadUint32(r)
+	return err
+}
+
+type MsgClientGetLegacyGameKeyResponse struct {
+	AppId  uint32
+	Result EResult
+	Length uint32
+}
+
+func NewMsgClientGetLegacyGameKeyResponse() *MsgClientGetLegacyGameKeyResponse {
+	return &MsgClientGetLegacyGameKeyResponse{}
+}
+
+func (d *MsgClientGetLegacyGameKeyResponse) GetEMsg() EMsg {
+	return EMsg_ClientGetLegacyGameKeyResponse
+}
+
+func (d *MsgClientGetLegacyGameKeyResponse) Serialize(w io.Writer) error {
+	var err error
+	err = binary.Write(w, binary.LittleEndian, d.AppId)
+	if err != nil {
+		return err
+	}
+	err = binary.Write(w, binary.LittleEndian, d.Result)
+	if err != nil {
+		return err
+	}
+	err = binary.Write(w, binary.LittleEndian, d.Length)
+	return err
+}
+
+func (d *MsgClientGetLegacyGameKeyResponse) Deserialize(r io.Reader) error {
+	var err error
+	d.AppId, err = rwu.ReadUint32(r)
+	if err != nil {
+		return err
+	}
+	t0, err := rwu.ReadInt32(r)
+	if err != nil {
+		return err
+	}
+	d.Result = EResult(t0)
+	d.Length, err = rwu.ReadUint32(r)
 	return err
 }
