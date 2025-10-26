@@ -238,8 +238,6 @@ func (s *Social) HandlePacket(packet *protocol.Packet) {
 		s.handleIgnoreFriendResponse(packet)
 	case steamlang.EMsg_ClientFriendProfileInfoResponse:
 		s.handleProfileInfoResponse(packet)
-	case steamlang.EMsg_ClientFSGetFriendMessageHistoryResponse:
-		s.handleFriendMessageHistoryResponse(packet)
 	}
 }
 

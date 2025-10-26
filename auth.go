@@ -9,6 +9,7 @@ import (
 	"github.com/an0nfunc/go-steam/v3/protocol/protobuf"
 	"github.com/an0nfunc/go-steam/v3/protocol/steamlang"
 	"github.com/an0nfunc/go-steam/v3/steamid"
+	"github.com/an0nfunc/go-steam/v3/webui"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -171,13 +172,13 @@ func (a *Auth) handleLoggedOff(packet *protocol.Packet) {
 }
 
 func (a *Auth) handleUpdateMachineAuth(packet *protocol.Packet) {
-	body := new(protobuf.CMsgClientUpdateMachineAuth)
+	body := new(webui.CMsgClientUpdateMachineAuth)
 	packet.ReadProtoMsg(body)
 	hash := sha1.New()
 	hash.Write(packet.Data)
 	sha := hash.Sum(nil)
 
-	msg := protocol.NewClientMsgProtobuf(steamlang.EMsg_ClientUpdateMachineAuthResponse, &protobuf.CMsgClientUpdateMachineAuthResponse{
+	msg := protocol.NewClientMsgProtobuf(steamlang.EMsg_ClientUpdateMachineAuthResponse, &webui.CMsgClientUpdateMachineAuthResponse{
 		ShaFile: sha,
 	})
 	msg.SetTargetJobId(packet.SourceJobId)

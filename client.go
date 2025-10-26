@@ -290,8 +290,6 @@ func (c *Client) handlePacket(packet *protocol.Packet) {
 		c.handleChannelEncryptResult(packet)
 	case steamlang.EMsg_Multi:
 		c.handleMulti(packet)
-	case steamlang.EMsg_ClientCMList:
-		c.handleClientCMList(packet)
 	}
 
 	c.handlersMutex.RLock()
@@ -371,21 +369,6 @@ func (c *Client) handleMulti(packet *protocol.Packet) {
 		}
 		c.handlePacket(p)
 	}
-}
-
-func (c *Client) handleClientCMList(packet *protocol.Packet) {
-	body := new(protobuf.CMsgClientCMList)
-	packet.ReadProtoMsg(body)
-
-	l := make([]*netutil.PortAddr, 0)
-	for i, ip := range body.GetCmAddresses() {
-		l = append(l, &netutil.PortAddr{
-			IP:   readIp(ip),
-			Port: uint16(body.GetCmPorts()[i]),
-		})
-	}
-
-	c.Emit(&ClientCMListEvent{l})
 }
 
 func readIp(ip uint32) net.IP {
