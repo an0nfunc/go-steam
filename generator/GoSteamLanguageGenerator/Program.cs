@@ -32,8 +32,8 @@ namespace GoSteamLanguageGenerator
             Node rootEnumNode = new Node();
             Node rootMessageNode = new Node();
 
-            rootEnumNode.childNodes.AddRange(root.childNodes.Where(n => n is EnumNode));
-            rootMessageNode.childNodes.AddRange(root.childNodes.Where(n => n is ClassNode));
+            rootEnumNode.ChildNodes.AddRange(root.ChildNodes.Where(n => n is EnumNode));
+            rootMessageNode.ChildNodes.AddRange(root.ChildNodes.Where(n => n is ClassNode));
 
             StringBuilder enumBuilder = new StringBuilder();
             StringBuilder messageBuilder = new StringBuilder();

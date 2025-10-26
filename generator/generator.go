@@ -65,7 +65,7 @@ func cleanGlob(pattern string) {
 
 func buildSteamLanguage() {
 	print("# Building Steam Language")
-	execute("dotnet", []string{"run", "-c", "release", "-p", "./GoSteamLanguageGenerator", "./SteamKit", "../protocol/steamlang"})
+	execute("dotnet", []string{"run", "-c", "release", "--project", "./GoSteamLanguageGenerator", "./SteamKit", "../protocol/steamlang"})
 	execute("gofmt", []string{"-w", "../protocol/steamlang/enums.go", "../protocol/steamlang/messages.go"})
 }
 
@@ -76,8 +76,6 @@ func buildProto() {
 	buildProtoMap("tf2", tf2ProtoFiles, "../tf2/protocol/protobuf")
 	buildProtoMap("dota2", dotaProtoFiles, "../dota/protocol/protobuf")
 	buildProtoMap("csgo", csgoProtoFiles, "../csgo/protocol/protobuf")
-
-	_ = os.Remove("Protobufs/google/protobuf/valve_extensions.proto")
 }
 
 func buildProtoMap(srcSubdir string, files map[string]string, outDir string) {
@@ -126,7 +124,6 @@ var clientProtoFiles = map[string]string{
 	"steammessages_unified_base.steamclient.proto":      "base_unified.pb.go",
 	"steammessages_cloud.steamclient.proto":             "cloud.pb.go",
 	"steammessages_credentials.steamclient.proto":       "credentials.pb.go",
-	"steammessages_deviceauth.steamclient.proto":        "deviceauth.pb.go",
 	"steammessages_gamenotifications.steamclient.proto": "gamenotifications.pb.go",
 	"steammessages_offline.steamclient.proto":           "offline.pb.go",
 	"steammessages_parental.steamclient.proto":          "parental.pb.go",
@@ -210,9 +207,11 @@ func forceRename(from, to string) error {
 	return os.Rename(from, to)
 }
 
-var pkgRegex = regexp.MustCompile(`(package \w+)`)
-var unusedImportCommentRegex = regexp.MustCompile("// discarding unused import .*\n")
-var fileDescriptorVarRegex = regexp.MustCompile(`fileDescriptor\d+`)
+var (
+	pkgRegex                 = regexp.MustCompile(`(package \w+)`)
+	unusedImportCommentRegex = regexp.MustCompile("// discarding unused import .*\n")
+	fileDescriptorVarRegex   = regexp.MustCompile(`fileDescriptor\d+`)
+)
 
 func fixProto(outDir, path string) {
 	// goprotobuf is terrible at dependencies, so we must fix them manually...
@@ -309,7 +308,7 @@ func (w *quotedWriter) Write(p []byte) (n int, err error) {
 		}
 	}
 	if n != len(p) {
-		nw, err := w.w.Write(p[n:len(p)])
+		nw, err := w.w.Write(p[n:])
 		n += nw
 		return n, err
 	}
